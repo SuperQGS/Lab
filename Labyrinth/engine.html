@@ -70,8 +70,11 @@
             //type:
             function develop() {
                 if (change_tile.type == "player") {
+                    //set player coordinates to player tile
                     change_tile.x = player1_x;
                     change_tile.y = player1_y - 7;
+                    
+                    //set player directional texture
                     /*if (direction == "south") {
                         tiles[new_tile_num].image = RobotD;
                     }
@@ -93,7 +96,7 @@
             }
             
             
-            function collision() {
+            function collision(labeldir) {
                 var new_tile_num = 0;
                 var num_of_tiles = tiles.length;
                 var loop = true;
@@ -104,19 +107,18 @@
                             
                             var coord_spoof_x = 0;
                             var coord_spoof_y = 0;
-                            if (direction == "south") {
+                            if (south == true && labeldir == "south") {
                                 coord_spoof_y = 1;
                             }
-                            if (direction == "north") {
+                            if (north == true && labeldir == "north") {
                                 coord_spoof_y = 0 - 1;
                             }
-                            if (direction == "west") {
+                            if (west == true && labeldir == "west") {
                                 coord_spoof_x = 0 - 1;
                             }
-                            if (direction == "east") {
+                            if (east == true && labeldir == "east") {
                                 coord_spoof_x = 1;
                             }
-                            
                             if (change_tile.x < player1_x + 7 + coord_spoof_x && change_tile.x + 7 > player1_x + coord_spoof_x && change_tile.y < player1_y + 7 + coord_spoof_y && change_tile.y + 7 > player1_y + coord_spoof_y) {
                                 return true;
                             }
@@ -128,65 +130,88 @@
                 }
             }
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
             //INDEPENDENTS\/
             
             //player 1 controls
             var player1_x = 0;
             var player1_y = 0;
             var direction;
+            var north = false;
+            var south = false;
+            var east = false;
+            var west = false;
+            
+            //test for what key is down, set direction variable to it's direction and sets north/south/east/west to true
             window.addEventListener("keydown", binds, false);
             function binds(e) {
             
-                //test for which key pressed and set coordinates
                 if (e.keyCode == "40") {
-                    //go down
+                    //set south
                     direction = "south";
+                    south = true;
                 }
                 
                 if (e.keyCode == "39") {
-                    //go right
+                    //set east
                     direction = "east";
+                    east = true;
                 }
                 
                 if (e.keyCode == "38") {
-                    //go up
+                    //set north
                     direction = "north";
+                    north = true;
                 }
             
                 if (e.keyCode == "37") {
-                    //go left
+                    //set west
                     direction = "west";
+                    west = true;
                 }
             }
             
-            window.setInterval(function(){ set_coordinates(); }, 15);
+            //test for which key is no longer pressed and disable it
+            window.addEventListener("keyup", upbinds, false);
+            function upbinds(u) {
+                if (u.keyCode == "40") {
+                    //disable south
+                    south = false;
+                }
+                
+                if (u.keyCode == "39") {
+                    //disable east
+                    east = false;
+                }
+                
+                if (u.keyCode == "38") {
+                    //disable north
+                    north = false;
+                }
+            
+                if (u.keyCode == "37") {
+                    //disable west
+                    west = false;
+                }
+            }
+            
+            //add coordinate by 1, depending on if the direction is true and if it doesn't collide
+            window.setInterval(function(){ set_coordinates(); }, 25);
             function set_coordinates() {
-                //collision();
-                if (direction == "north" && !collision()) {
+                //north
+                if (north == true && !collision("north")) {
                     player1_y = player1_y - 1;
                 }
-                if (direction == "south" && !collision()) {
+                //south
+                if (south == true && !collision("south")) {
                     player1_y = player1_y + 1;
                 }
-                if (direction == "east" && !collision()) {
+                //east
+                if (east == true && !collision("east")) {
                     player1_x = player1_x + 1;
                 }
-                if (direction == "west" && !collision()) {
+                //west
+                if (west == true && !collision("west")) {
                     player1_x = player1_x - 1;
                 }
                 
