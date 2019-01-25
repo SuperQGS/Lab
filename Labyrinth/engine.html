@@ -56,6 +56,7 @@
                         change_tile.y = change_tile.y;
                         ctx.imageSmoothingEnabled = false;
                         develop();
+                        change_tile = "";
                         new_tile_num = new_tile_num + 1;
                     } else {
                         loop = false;
@@ -88,11 +89,9 @@
                         tiles[new_tile_num].image = RobotR;
                     }*/
                 }
-                
-                
-                
+
                 //this is the line that finally renders the tile
-                ctx.drawImage(change_tile.image, change_tile.x + grid_width/2, change_tile.y + grid_height/2);
+                ctx.drawImage(change_tile.image, change_tile.x + grid_width/2 - player1_x, change_tile.y + grid_height/2 - player1_y);
             }
             
             
