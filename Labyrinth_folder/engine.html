@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+    <!--QGS tile engine v0.3 by qgsoftware.net-->
+    <style>
+        * {
+            text-align: center;
+        }
+        canvas {
+            height: 97vh;
+            
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -o-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: pixelated;
+        }
+    </style>
+    <body>
+        <!--PASTE CANVAS TAG UNDER HERE [note: you can change size and position with css or putting the tag where you want]-->
+        <canvas id='testmp'></canvas>
+        
+        <br>
+        <!--PASTE IMAGE TAGS UNDER HERE [note: you can hide this with css]-->
+        <div id="images">
+            <img src="images/stone.bmp" id="stone">
+            <img src="images/dark.bmp" id="dark">
+            <img src="images/stone_bricks.bmp" id="stone_bricks">
+            <img src="images/player_front.png" id="player">
+            <img src="images/player_back.png" id="player_b">
+            <img src="images/player_right.png" id="player_r">
+            <img src="images/player_left.png" id="player_l"></div>
+
+        
+        <script>
+            //PASTE CANVAS VARIABLES UNDER HERE
+            var canvas_name = "testmp"; var texture_dimensions = 7; var grid_height = 84; var grid_width = 98;
+            //PASTE TILES UNDER HERE
+            var tiles = [{x:-35, y:-35, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-28, y:-35, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-21, y:-35, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-14, y:-35, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-7, y:-35, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:0, y:-35, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:7, y:-35, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:14, y:-35, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:21, y:-35, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:28, y:-35, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:28, y:-28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:28, y:-21, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:28, y:-14, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:28, y:-7, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:28, y:0, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:28, y:7, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:28, y:14, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:28, y:21, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:28, y:28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:21, y:28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:14, y:28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:7, y:28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:0, y:28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-7, y:28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-14, y:28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-21, y:28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-28, y:28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-35, y:28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-42, y:28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-42, y:21, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-42, y:14, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-42, y:7, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-42, y:0, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-42, y:-7, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-42, y:-14, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-42, y:-21, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-42, y:-28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-42, y:-35, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-7, y:-28, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-7, y:-21, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:21, y:7, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:14, y:7, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:14, y:14, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:14, y:21, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:-21, y:0, type:'wall', image:stone_bricks, image_string:'stone_bricks'},{x:21, y:14, type:'floor', image:stone, image_string:'stone'},{x:21, y:21, type:'floor', image:stone, image_string:'stone'},{x:7, y:21, type:'floor', image:stone, image_string:'stone'},{x:7, y:14, type:'floor', image:stone, image_string:'stone'},{x:7, y:7, type:'floor', image:stone, image_string:'stone'},{x:7, y:7, type:'floor', image:stone, image_string:'stone'},{x:7, y:0, type:'floor', image:stone, image_string:'stone'},{x:14, y:0, type:'floor', image:stone, image_string:'stone'},{x:21, y:0, type:'floor', image:stone, image_string:'stone'},{x:21, y:-7, type:'floor', image:stone, image_string:'stone'},{x:14, y:-7, type:'floor', image:stone, image_string:'stone'},{x:7, y:-7, type:'floor', image:stone, image_string:'stone'},{x:7, y:-14, type:'floor', image:stone, image_string:'stone'},{x:14, y:-14, type:'floor', image:stone, image_string:'stone'},{x:21, y:-14, type:'floor', image:stone, image_string:'stone'},{x:21, y:-21, type:'floor', image:stone, image_string:'stone'},{x:14, y:-21, type:'floor', image:stone, image_string:'stone'},{x:7, y:-21, type:'floor', image:stone, image_string:'stone'},{x:7, y:-28, type:'floor', image:stone, image_string:'stone'},{x:14, y:-28, type:'floor', image:stone, image_string:'stone'},{x:21, y:-28, type:'floor', image:stone, image_string:'stone'},{x:0, y:-28, type:'floor', image:stone, image_string:'stone'},{x:0, y:-21, type:'floor', image:stone, image_string:'stone'},{x:0, y:-14, type:'floor', image:stone, image_string:'stone'},{x:-7, y:-14, type:'floor', image:stone, image_string:'stone'},{x:-7, y:-7, type:'floor', image:stone, image_string:'stone'},{x:0, y:-7, type:'floor', image:stone, image_string:'stone'},{x:0, y:0, type:'floor', image:stone, image_string:'stone'},{x:-7, y:0, type:'floor', image:stone, image_string:'stone'},{x:-7, y:7, type:'floor', image:stone, image_string:'stone'},{x:0, y:7, type:'floor', image:stone, image_string:'stone'},{x:0, y:14, type:'floor', image:stone, image_string:'stone'},{x:-7, y:14, type:'floor', image:stone, image_string:'stone'},{x:-7, y:21, type:'floor', image:stone, image_string:'stone'},{x:0, y:21, type:'floor', image:stone, image_string:'stone'},{x:-14, y:7, type:'floor', image:stone, image_string:'stone'},{x:-14, y:0, type:'floor', image:stone, image_string:'stone'},{x:-21, y:7, type:'floor', image:stone, image_string:'stone'},{x:-21, y:14, type:'floor', image:stone, image_string:'stone'},{x:-14, y:14, type:'floor', image:stone, image_string:'stone'},{x:-14, y:21, type:'floor', image:stone, image_string:'stone'},{x:-21, y:21, type:'floor', image:stone, image_string:'stone'},{x:-28, y:14, type:'floor', image:stone, image_string:'stone'},{x:-28, y:7, type:'floor', image:stone, image_string:'stone'},{x:-28, y:0, type:'floor', image:stone, image_string:'stone'},{x:-28, y:-7, type:'floor', image:stone, image_string:'stone'},{x:-21, y:-7, type:'floor', image:stone, image_string:'stone'},{x:-14, y:-7, type:'floor', image:stone, image_string:'stone'},{x:-14, y:-14, type:'floor', image:stone, image_string:'stone'},{x:-21, y:-14, type:'floor', image:stone, image_string:'stone'},{x:-21, y:-21, type:'floor', image:stone, image_string:'stone'},{x:-14, y:-21, type:'floor', image:stone, image_string:'stone'},{x:-14, y:-28, type:'floor', image:stone, image_string:'stone'},{x:-21, y:-28, type:'floor', image:stone, image_string:'stone'},{x:-28, y:-28, type:'floor', image:stone, image_string:'stone'},{x:-35, y:-28, type:'floor', image:stone, image_string:'stone'},{x:-35, y:-21, type:'floor', image:stone, image_string:'stone'},{x:-28, y:-21, type:'floor', image:stone, image_string:'stone'},{x:-28, y:-14, type:'floor', image:stone, image_string:'stone'},{x:-35, y:-14, type:'floor', image:stone, image_string:'stone'},{x:-35, y:-7, type:'floor', image:stone, image_string:'stone'},{x:-35, y:0, type:'floor', image:stone, image_string:'stone'},{x:-35, y:7, type:'floor', image:stone, image_string:'stone'},{x:-35, y:14, type:'floor', image:stone, image_string:'stone'},{x:-35, y:21, type:'floor', image:stone, image_string:'stone'},{x:-28, y:21, type:'floor', image:stone, image_string:'stone'},{x:-42, y:-42, type:'dark', image:dark, image_string:'dark'},{x:-35, y:-42, type:'dark', image:dark, image_string:'dark'},{x:-35, y:-49, type:'dark', image:dark, image_string:'dark'},{x:-42, y:-49, type:'dark', image:dark, image_string:'dark'},{x:-49, y:-49, type:'dark', image:dark, image_string:'dark'},{x:-49, y:-42, type:'dark', image:dark, image_string:'dark'},{x:-49, y:-35, type:'dark', image:dark, image_string:'dark'},{x:-49, y:-28, type:'dark', image:dark, image_string:'dark'},{x:-49, y:-21, type:'dark', image:dark, image_string:'dark'},{x:-28, y:-42, type:'dark', image:dark, image_string:'dark'},{x:-21, y:-42, type:'dark', image:dark, image_string:'dark'},{x:-14, y:-42, type:'dark', image:dark, image_string:'dark'},{x:-7, y:-42, type:'dark', image:dark, image_string:'dark'},{x:0, y:-42, type:'dark', image:dark, image_string:'dark'},{x:7, y:-42, type:'dark', image:dark, image_string:'dark'},{x:14, y:-42, type:'dark', image:dark, image_string:'dark'},{x:21, y:-42, type:'dark', image:dark, image_string:'dark'},{x:28, y:-42, type:'dark', image:dark, image_string:'dark'},{x:28, y:-49, type:'dark', image:dark, image_string:'dark'},{x:35, y:-49, type:'dark', image:dark, image_string:'dark'},{x:35, y:-42, type:'dark', image:dark, image_string:'dark'},{x:35, y:-35, type:'dark', image:dark, image_string:'dark'},{x:35, y:-28, type:'dark', image:dark, image_string:'dark'},{x:35, y:-21, type:'dark', image:dark, image_string:'dark'},{x:35, y:-14, type:'dark', image:dark, image_string:'dark'},{x:35, y:-7, type:'dark', image:dark, image_string:'dark'},{x:35, y:0, type:'dark', image:dark, image_string:'dark'},{x:35, y:7, type:'dark', image:dark, image_string:'dark'},{x:35, y:14, type:'dark', image:dark, image_string:'dark'},{x:35, y:21, type:'dark', image:dark, image_string:'dark'},{x:35, y:28, type:'dark', image:dark, image_string:'dark'},{x:35, y:35, type:'dark', image:dark, image_string:'dark'},{x:28, y:35, type:'dark', image:dark, image_string:'dark'},{x:21, y:35, type:'dark', image:dark, image_string:'dark'},{x:14, y:35, type:'dark', image:dark, image_string:'dark'},{x:7, y:35, type:'dark', image:dark, image_string:'dark'},{x:0, y:35, type:'dark', image:dark, image_string:'dark'},{x:-7, y:35, type:'dark', image:dark, image_string:'dark'},{x:-14, y:35, type:'dark', image:dark, image_string:'dark'},{x:-21, y:35, type:'dark', image:dark, image_string:'dark'},{x:-28, y:35, type:'dark', image:dark, image_string:'dark'},{x:-35, y:35, type:'dark', image:dark, image_string:'dark'},{x:-42, y:35, type:'dark', image:dark, image_string:'dark'},{x:-42, y:35, type:'dark', image:dark, image_string:'dark'},{x:-49, y:35, type:'dark', image:dark, image_string:'dark'},{x:-49, y:28, type:'dark', image:dark, image_string:'dark'},{x:-49, y:21, type:'dark', image:dark, image_string:'dark'},{x:-49, y:14, type:'dark', image:dark, image_string:'dark'},{x:-49, y:7, type:'dark', image:dark, image_string:'dark'},{x:-49, y:0, type:'dark', image:dark, image_string:'dark'},{x:-49, y:-7, type:'dark', image:dark, image_string:'dark'},{x:-49, y:-14, type:'dark', image:dark, image_string:'dark'},{x:-28, y:-49, type:'dark', image:dark, image_string:'dark'},{x:-21, y:-49, type:'dark', image:dark, image_string:'dark'},{x:-7, y:-49, type:'dark', image:dark, image_string:'dark'},{x:0, y:-49, type:'dark', image:dark, image_string:'dark'},{x:-14, y:-49, type:'dark', image:dark, image_string:'dark'},{x:42, y:-42, type:'dark', image:dark, image_string:'dark'},{x:42, y:-35, type:'dark', image:dark, image_string:'dark'},{x:42, y:-35, type:'dark', image:dark, image_string:'dark'},{x:42, y:-28, type:'dark', image:dark, image_string:'dark'},{x:42, y:-21, type:'dark', image:dark, image_string:'dark'},{x:42, y:-14, type:'dark', image:dark, image_string:'dark'},{x:42, y:-7, type:'dark', image:dark, image_string:'dark'},{x:42, y:0, type:'dark', image:dark, image_string:'dark'},{x:42, y:7, type:'dark', image:dark, image_string:'dark'},{x:42, y:35, type:'dark', image:dark, image_string:'dark'},{x:42, y:28, type:'dark', image:dark, image_string:'dark'},{x:42, y:21, type:'dark', image:dark, image_string:'dark'},{x:42, y:14, type:'dark', image:dark, image_string:'dark'},
+            
+            {x:0, y:0, type:'player', image:player, image_string:'player'}
+            ];
+
+            //canvas info
+            var canvas = document.getElementById(canvas_name);
+            var ctx = canvas.getContext("2d");
+            ctx.translate(canvas.width / 2,canvas.height / 2);
+            
+            //canvas dimensions
+            document.getElementById(canvas_name).width = grid_width;
+            document.getElementById(canvas_name).height = grid_height;
+            
+            //render stuff
+            var change_tile = 0;
+            var new_tile_num = 0;
+            window.setInterval(function(){ render(); }, 0);
+            function render() {
+                var new_tile_num = 0;
+                var num_of_tiles = tiles.length - 1;
+                var loop = true;
+                while (loop) {
+                    if (new_tile_num <= num_of_tiles) {
+                        change_tile = tiles[new_tile_num];
+                        change_tile.x = change_tile.x;
+                        change_tile.y = change_tile.y;
+                        ctx.imageSmoothingEnabled = false;
+                        develop();
+                        change_tile = "";
+                        new_tile_num = new_tile_num + 1;
+                    } else {
+                        loop = false;
+                    }
+                }
+            }
+            
+            //developer function
+            //NOTE: attributes of each tile are
+            //x:
+            //y:
+            //type:
+            function develop() {
+                if (change_tile.type == "player") {
+                    //set player coordinates to player tile
+                    change_tile.x = player1_x;
+                    change_tile.y = player1_y - 7;
+                    
+                    //set player directional texture
+                    if (direction == "south") {
+                        change_tile.image = player;
+                    }
+                    if (direction == "north") {
+                        change_tile.image = player_b;
+                    }
+                    if (direction == "west") {
+                        change_tile.image = player_l;
+                    }
+                    if (direction == "east") {
+                        change_tile.image = player_r;
+                    }
+                }
+
+                //this is the line that finally renders the tile
+                ctx.drawImage(change_tile.image, change_tile.x + grid_width/2 - player1_x, change_tile.y + grid_height/2 - player1_y);
+            }
+            
+            
+            function collision(labeldir) {
+                var new_tile_num = 0;
+                var num_of_tiles = tiles.length;
+                var loop = true;
+                while (loop) {
+                    if (new_tile_num < num_of_tiles) {
+                        change_tile = tiles[new_tile_num];
+                        if (change_tile.type == "wall") {
+                            
+                            var coord_spoof_x = 0;
+                            var coord_spoof_y = 0;
+                            if (south == true && labeldir == "south") {
+                                coord_spoof_y = 1;
+                            }
+                            if (north == true && labeldir == "north") {
+                                coord_spoof_y = 0 - 1;
+                            }
+                            if (west == true && labeldir == "west") {
+                                coord_spoof_x = 0 - 1;
+                            }
+                            if (east == true && labeldir == "east") {
+                                coord_spoof_x = 1;
+                            }
+                            if (change_tile.x < player1_x + 7 + coord_spoof_x && change_tile.x + 7 > player1_x + coord_spoof_x && change_tile.y < player1_y + 7 + coord_spoof_y && change_tile.y + 7 > player1_y + coord_spoof_y) {
+                                return true;
+                            }
+                        }
+                        new_tile_num = new_tile_num + 1;
+                    } else {
+                        loop = false;
+                    }
+                }
+            }
+            
+
+            //INDEPENDENTS\/
+            
+            //player 1 controls
+            var player1_x = 0;
+            var player1_y = 0;
+            var direction;
+            var north = false;
+            var south = false;
+            var east = false;
+            var west = false;
+            
+            //test for what key is down, set direction variable to it's direction and sets north/south/east/west to true
+            window.addEventListener("keydown", binds, false);
+            function binds(e) {
+                //ARROW KEYS
+                if (e.keyCode == "40") {
+                    //set south
+                    direction = "south";
+                    //south = true;
+                }
+                if (e.keyCode == "39") {
+                    //set east
+                    direction = "east";
+                    //east = true;
+                }
+                if (e.keyCode == "38") {
+                    //set north
+                    direction = "north";
+                    //north = true;
+                }
+                if (e.keyCode == "37") {
+                    //set west
+                    direction = "west";
+                    //west = true;
+                }
+                
+                //WASD
+                if (e.keyCode == "87") {
+                    //set north
+                    north = true;
+                }
+                if (e.keyCode == "83") {
+                    //set south
+                    south = true;
+                }
+                if (e.keyCode == "68") {
+                    //set west
+                    east = true;
+                }
+                if (e.keyCode == "65") {
+                    //set west
+                    west = true;
+                }
+            }
+            
+            //test for which key is no longer pressed and disable it
+            window.addEventListener("keyup", upbinds, false);
+            function upbinds(u) {                
+                //WASD
+                if (u.keyCode == "87") {
+                    //set north
+                    north = false;
+                }
+                if (u.keyCode == "83") {
+                    //set south
+                    south = false;
+                }
+                if (u.keyCode == "68") {
+                    //set west
+                    east = false;
+                }
+                if (u.keyCode == "65") {
+                    //set west
+                    west = false;
+                }
+            }
+            
+            //add coordinate by 1, depending on if the direction is true and if it doesn't collide
+            window.setInterval(function(){ set_coordinates(); }, 25);
+            function set_coordinates() {
+                //north
+                if (north == true && !collision("north")) {
+                    player1_y = player1_y - 1;
+                }
+                //south
+                if (south == true && !collision("south")) {
+                    player1_y = player1_y + 1;
+                }
+                //east
+                if (east == true && !collision("east")) {
+                    player1_x = player1_x + 1;
+                }
+                //west
+                if (west == true && !collision("west")) {
+                    player1_x = player1_x - 1;
+                }
+                
+            }
+        </script>
+    </body>
+</html>
