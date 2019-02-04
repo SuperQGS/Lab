@@ -2,7 +2,7 @@
 -TYPE ARRAY:
 ['dark','wall','floor','door','entity','item']
 -IMAGE TAGS:
-<img src="images/dark.bmp" id="dark"><img src="images/stone.bmp" id="stone"><img src="images/stone_bricks.bmp" id="stonebricks"><img src="images/wood.bmp" id="wood"><img src="images/green_door.bmp" id="greendoor"><img src="images/green_key.bmp" id="greenkey"><img src="images/monster.bmp" id="monster"><img src="images/player_spawn.bmp" id="playerspawn"><img src="images/weapon.bmp" id="weapon">
+<img src="images/dark.bmp" id="dark"><img src="images/stone.bmp" id="stone"><img src="images/stone_bricks.bmp" id="stonebricks"><img src="images/wood.bmp" id="wood"><img src="images/green_door.bmp" id="greendoor"><img src="images/green_key.png" id="greenkey"><img src="images/monster.bmp" id="monster"><img src="images/player_spawn.bmp" id="playerspawn"><img src="images/weapon.bmp" id="weapon">
 -IMAGE ARRAY:
 ['dark','stone','stonebricks','wood','greendoor','greenkey','monster','playerspawn','weapon']
 -TILE ARRAY:
