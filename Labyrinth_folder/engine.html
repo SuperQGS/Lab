@@ -113,7 +113,7 @@
                 while (loop) {
                     if (new_tile_num < num_of_tiles) {
                         change_tile = tiles[new_tile_num];
-                        if (change_tile.type == "wall" || change_tile.type == "yellow_door" || change_tile.type == "red_door" || change_tile.type == "green_door" || change_tile.type == "orange_door") {
+                        if (change_tile.type == "wall" || change_tile.type == "yellow_door" || change_tile.type == "red_door" || change_tile.type == "green_door" || change_tile.type == "orange_door" || change_tile.type == "yellow_key" || change_tile.type == "red_key" || change_tile.type == "green_key" || change_tile.type == "orange_key") {
                             
                             var coord_spoof_x = 0;
                             var coord_spoof_y = 0;
@@ -130,8 +130,31 @@
                                 coord_spoof_x = 1;
                             }
                             if (change_tile.x < player1_x + 7 + coord_spoof_x && change_tile.x + 7 > player1_x + coord_spoof_x && change_tile.y < player1_y + 7 + coord_spoof_y && change_tile.y + 7 > player1_y + coord_spoof_y) {
-                                if (detect_key()) {
-                                    return true;
+                                
+                                if (change_tile.type == "wall" || change_tile.type == "yellow_door" || change_tile.type == "red_door" || change_tile.type == "green_door" || change_tile.type == "orange_door") {
+                                    if (detect_key()) {
+                                        return true;
+                                    }
+                                }
+                                else if (change_tile.type == "yellow_key") {
+                                    change_tile.x = 9999999999999999;
+                                    yellow = true;
+                                    return false;
+                                }
+                                else if (change_tile.type == "red_key") {
+                                    change_tile.x = 9999999999999999;
+                                    red = true;
+                                    return false;
+                                }
+                                else if (change_tile.type == "green_key") {
+                                    change_tile.x = 9999999999999999;
+                                    green = true;
+                                    return false;
+                                }
+                                else if (change_tile.type == "orange_key") {
+                                    change_tile.x = 9999999999999999;
+                                    orange = true;
+                                    return false;
                                 }
                             }
                         }
@@ -179,9 +202,9 @@
             var east = false;
             var west = false;
             //keys
-            var red = true;
+            var red = false;
             var green = false;
-            var yellow = true;
+            var yellow = false;
             var orange = false;
             
             //test for what key is down, set direction variable to it's direction and sets north/south/east/west to true
