@@ -46,6 +46,11 @@
             <img src="images/orange_key.png" id="orange_key"><img src="images/orange_key.png" id="orangekey">
             
             <img src="images/player_spawn.bmp" id="playerspawn">
+            
+            <img src="images/arrow_n.png" id="arrow_n">
+            <img src="images/arrow_s.png" id="arrow_s">
+            <img src="images/arrow_w.png" id="arrow_w">
+            <img src="images/arrow_e.png" id="arrow_e">
         </div>
             
 
@@ -99,11 +104,12 @@
             //y:
             //type:
             function develop() {
+                shoot();
+                
                 if (change_tile.type == "player") {
                     //set player coordinates to player tile
                     change_tile.x = player1_x;
                     change_tile.y = player1_y - 7;
-                    
                     //set player directional texture
                     if (direction == "south") {
                         change_tile.image = player;
@@ -118,7 +124,7 @@
                         change_tile.image = player_r;
                     }
                 }
-
+                
                 //this is the line that finally renders the tile
                 ctx.drawImage(change_tile.image, change_tile.x + grid_width/2 - player1_x, change_tile.y + grid_height/2 - player1_y);
             }
@@ -213,7 +219,7 @@
             var player1_x = 0;
             var player1_y = -7;
             //orientation
-            var direction;
+            var direction = "south";
             //movement
             var north = false;
             var south = false;
@@ -224,6 +230,8 @@
             var green = false;
             var yellow = false;
             var orange = false;
+            //shooting
+            var shooting = false;
             
             //test for what key is down, set direction variable to it's direction and sets north/south/east/west to true
             window.addEventListener("keydown", binds, false);
@@ -267,6 +275,11 @@
                     //set west
                     west = true;
                 }
+                
+                //SHOOT
+                if (e.keyCode == "32") {
+                    shooting = true;
+                }
             }
             
             //test for which key is no longer pressed and disable it
@@ -289,6 +302,11 @@
                     //set west
                     west = false;
                 }
+                
+                //SHOOT
+                if (u.keyCode == "32") {
+                    shooting = false;
+                }
             }
             
             //add coordinate by 1, depending on if the direction is true and if it doesn't collide
@@ -310,9 +328,33 @@
                 if (west == true && !collision("west")) {
                     player1_x = player1_x - 1;
                 }
-                
             }
             
+            //SHOOT
+            function shoot() {
+                if (shooting == true) {
+                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks'}
+                    shooting = false;
+                }
+                if (change_tile.type == "arrow") {
+                    if (change_tile.dir == "north") {
+                        change_tile.image = arrow_n;
+                        change_tile.y = change_tile.y - 0.5;
+                    }
+                    if (change_tile.dir == "south") {
+                        change_tile.image = arrow_s;
+                        change_tile.y = change_tile.y + 0.5;
+                    }
+                    if (change_tile.dir == "east") {
+                        change_tile.image = arrow_e;
+                        change_tile.x = change_tile.x + 0.5;
+                    }
+                    if (change_tile.dir == "west") {
+                        change_tile.image = arrow_w;
+                        change_tile.x = change_tile.x - 0.5;
+                    }
+                }
+            }
             
         </script>
     </body>
