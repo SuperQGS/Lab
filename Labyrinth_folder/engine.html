@@ -279,6 +279,7 @@
                 //SHOOT
                 if (e.keyCode == "32") {
                     shooting = true;
+                    startshoot();
                 }
             }
             
@@ -331,27 +332,33 @@
             }
             
             //SHOOT
-            function shoot() {
+            function startshoot() {
                 if (shooting == true) {
-                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks'}
+                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks'}//!!!add new atrribute weapon:"bow","crossbow"etc
                     shooting = false;
+                    setTimeout(function(){ shoot(); }, 100);
                 }
+            }
+            
+            
+            
+            function shoot() {
                 if (change_tile.type == "arrow") {
                     if (change_tile.dir == "north") {
                         change_tile.image = arrow_n;
-                        change_tile.y = change_tile.y - 0.5;
+                        change_tile.y = change_tile.y - 1;
                     }
                     if (change_tile.dir == "south") {
                         change_tile.image = arrow_s;
-                        change_tile.y = change_tile.y + 0.5;
+                        change_tile.y = change_tile.y + 1;
                     }
                     if (change_tile.dir == "east") {
                         change_tile.image = arrow_e;
-                        change_tile.x = change_tile.x + 0.5;
+                        change_tile.x = change_tile.x + 1;
                     }
                     if (change_tile.dir == "west") {
                         change_tile.image = arrow_w;
-                        change_tile.x = change_tile.x - 0.5;
+                        change_tile.x = change_tile.x - 1;
                     }
                 }
             }
