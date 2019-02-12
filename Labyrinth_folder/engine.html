@@ -104,8 +104,6 @@
             //y:
             //type:
             function develop() {
-                shoot();
-                
                 if (change_tile.type == "player") {
                     //set player coordinates to player tile
                     change_tile.x = player1_x;
@@ -278,8 +276,10 @@
                 
                 //SHOOT
                 if (e.keyCode == "32") {
-                    shooting = true;
-                    startshoot();
+                    if (shooting == false) {
+                        shooting = true;
+                    }
+                    
                 }
             }
             
@@ -332,37 +332,48 @@
             }
             
             //SHOOT
+            window.setInterval(function(){ startshoot(); }, 500);
             function startshoot() {
                 if (shooting == true) {
                     tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks'}//!!!add new atrribute weapon:"bow","crossbow"etc
-                    shooting = false;
-                    setTimeout(function(){ shoot(); }, 100);
+                    //shooting = false;
+                    //setTimeout(function(){ shoot(); }, 100);
                 }
             }
             
             
-            
+            window.setInterval(function(){ shoot(); }, 10);
             function shoot() {
-                if (change_tile.type == "arrow") {
-                    if (change_tile.dir == "north") {
-                        change_tile.image = arrow_n;
-                        change_tile.y = change_tile.y - 1;
-                    }
-                    if (change_tile.dir == "south") {
-                        change_tile.image = arrow_s;
-                        change_tile.y = change_tile.y + 1;
-                    }
-                    if (change_tile.dir == "east") {
-                        change_tile.image = arrow_e;
-                        change_tile.x = change_tile.x + 1;
-                    }
-                    if (change_tile.dir == "west") {
-                        change_tile.image = arrow_w;
-                        change_tile.x = change_tile.x - 1;
+                var snew_tile_num = 0;
+                var snum_of_tiles = tiles.length;
+                var sloop = true;
+                while (sloop) {
+                    if (snew_tile_num < snum_of_tiles) {
+                        change_tile = tiles[snew_tile_num];
+                        if (change_tile.type == "arrow") {
+                            if (change_tile.dir == "north") {
+                                change_tile.image = arrow_n;
+                                change_tile.y = change_tile.y - 1;
+                            }
+                            if (change_tile.dir == "south") {
+                                change_tile.image = arrow_s;
+                                change_tile.y = change_tile.y + 1;
+                            }
+                            if (change_tile.dir == "east") {
+                                change_tile.image = arrow_e;
+                                change_tile.x = change_tile.x + 1;
+                            }
+                            if (change_tile.dir == "west") {
+                                change_tile.image = arrow_w;
+                                change_tile.x = change_tile.x - 1;
+                            }
+                        }
+                    snew_tile_num = snew_tile_num + 1;
+                    } else {
+                        sloop = false;
                     }
                 }
             }
-            
         </script>
     </body>
 </html>
