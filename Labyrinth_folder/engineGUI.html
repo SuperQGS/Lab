@@ -41,7 +41,7 @@
     </head>
     <body>
         <div id="images"></div>
-        <h1>QGS Tile Engine GUI v0.3</h1>
+        <h1>QGS Tile Engine GUI v0.5</h1>
         <a href="https://qgsoftware.net">qgsoftware.net</a>
         
         <div id="sidebyside">
@@ -50,6 +50,7 @@
             <p>Tools</p>
             <select id="tool">
                 <option>Place Tile To Grid</option>
+                <option>Fill Area With Tile</option>
                 <option>Place Tile To Pixel</option>
                 <option>Get Grid Coordinates</option>
                 <option>Get Pixel Coordinates</option>
@@ -93,6 +94,7 @@
         <button onclick="load_data()">Load</button>
         <br>
         <button onclick="output()">Compile</button>
+        <button onclick="jsfile()">download .js [experimental]</button>
         <script>
             //engine by SuperQGS @ QGsoftware.github.io
             
@@ -239,7 +241,6 @@
                     ctx.strokeStyle = "blue";
                     ctx.stroke(); ctx.stroke();
                 }
-
             }
             
             
@@ -309,6 +310,12 @@
                 if (tool == "Place Tile To Grid") {
                     place_tile_mouse(canvas, evt);
                 }
+                if (tool == "Fill Area With Tile") {
+                    fill_tile_area(canvas, evt);
+                }
+                if (tool == "Fill Area With Tile [1/2]") {
+                    fill_tile_area_two(canvas, evt);
+                }
                 if (tool == "Place Tile To Pixel") {
                     place_specific_coords();
                 }
@@ -361,18 +368,72 @@
             function get_grid_coordinates(canvas, evt) {
                 var rect = canvas.getBoundingClientRect();
                 
-                var click_x = (Math.floor((evt.clientX - rect.left) / texture_dimensions) * texture_dimensions) - exgrid_width/2;
-                var click_y = (Math.floor((evt.clientY - rect.top) / texture_dimensions) * texture_dimensions) - exgrid_height/2;
+                var click_x = ((Math.floor(((evt.clientX - rect.left) / scale) / texture_dimensions) * texture_dimensions) - exgrid_width/2);
+                var click_y = ((Math.floor(((evt.clientY - rect.top) / scale) / texture_dimensions) * texture_dimensions) - exgrid_height/2);
                 alert(click_x + "," + click_y);
             }
             
             //get pixel coordinates
             function get_pixel_coordinates(canvas, evt) {
                 var rect = canvas.getBoundingClientRect();
-                
+                //this probably doesn't work but it's not used much and I don't really care
                 var click_x = Math.floor((evt.clientX - rect.left)) - exgrid_width/2;
                 var click_y = Math.floor((evt.clientY - rect.top)) - exgrid_height/2;
                 alert(click_x + "," + click_y);
+            }
+            
+            //fill tile area
+            var a_click_x;
+            var a_click_y;
+            var a_click2_x;
+            var a_click2_y
+            function fill_tile_area(canvas, evt) {
+                //damage control
+                document.getElementById("tool").innerHTML = "<option>Fill Area With Tile [1/2]</option>";
+                
+                //get coords junk
+                var rect = canvas.getBoundingClientRect();
+                
+                a_click_x = ((Math.floor(((evt.clientX - rect.left) / scale) / texture_dimensions) * texture_dimensions) - exgrid_width/2);
+                a_click_y = ((Math.floor(((evt.clientY - rect.top) / scale) / texture_dimensions) * texture_dimensions) - exgrid_height/2);
+                
+                
+            }
+            function fill_tile_area_two(canvas, evt) {
+                var rect = canvas.getBoundingClientRect();
+                
+                a_click2_x = ((Math.floor(((evt.clientX - rect.left) / scale) / texture_dimensions) * texture_dimensions) - exgrid_width/2);
+                a_click2_y = ((Math.floor(((evt.clientY - rect.top) / scale) / texture_dimensions) * texture_dimensions) - exgrid_height/2);
+                
+                var place_specific_type = document.getElementById("type").value;
+                var place_specific_image = eval(document.getElementById("image").value);
+                var place_specific_image_string = document.getElementById("image").value;
+                
+                if (place_specific_type == "No Tile Selected" || place_specific_type == "") {
+                    alert("No Tile Selected");
+                    document.getElementById("tool").innerHTML = "<option>Place Tile To Grid</option><option>Fill Area With Tile</option><option>Place Tile To Pixel</option><option>Get Grid Coordinates</option><option>Get Pixel Coordinates</option>";
+                    document.getElementById("tool").value = "Fill Area With Tile";
+                } else if (a_click_x > a_click2_x || a_click_y > a_click2_y) {
+                    alert("Invalid use of tool. Please fill from top left to bottom right.");
+                    document.getElementById("tool").innerHTML = "<option>Place Tile To Grid</option><option>Fill Area With Tile</option><option>Place Tile To Pixel</option><option>Get Grid Coordinates</option><option>Get Pixel Coordinates</option>";
+                    document.getElementById("tool").value = "Fill Area With Tile";
+                } else {
+                    var area_loop_x = 0;
+                    var area_loop_y = 0;
+                    
+                    while (a_click_y + (texture_dimensions * area_loop_y) <= a_click2_y) {
+                        while (a_click_x + (texture_dimensions * area_loop_x) <= a_click2_x) {
+                            tiles[tiles.length] = {x:a_click_x + (texture_dimensions * area_loop_x), y:a_click_y + (texture_dimensions * area_loop_y), type:place_specific_type, image:place_specific_image, image_string:place_specific_image_string};
+                            existing_tiles();
+                            area_loop_x = area_loop_x + 1;
+                        }
+                        area_loop_x = 0;
+                        area_loop_y = area_loop_y + 1;
+                    }
+                    
+                    document.getElementById("tool").innerHTML = "<option>Place Tile To Grid</option><option>Fill Area With Tile</option><option>Place Tile To Pixel</option><option>Get Grid Coordinates</option><option>Get Pixel Coordinates</option>";
+                    document.getElementById("tool").value = "Fill Area With Tile";
+                }
             }
             
             function output() {
@@ -459,20 +520,22 @@
                 }
                 document.getElementById("image").innerHTML = select_tile_list;
             }
-            /*
-            ---SAVED DATA------------------------
--TYPE ARRAY:
-['test']
--IMAGE TAGS:
-<img src="red.png" id="red"><img src="test.png" id="blue">
--IMAGE ARRAY:
-['red','blue']
--TILE ARRAY:
-[{x:-48, y:-64, type:'test', image:red, image_string:'red'},{x:48, y:-16, type:'test', image:red, image_string:'red'},{x:-48, y:16, type:'test', image:red, image_string:'red'},{x:0, y:-48, type:'test', image:red, image_string:'red'},{x:16, y:0, type:'test', image:red, image_string:'red'},{x:-16, y:-16, type:'test', image:blue, image_string:'blue'},{x:-48, y:-32, type:'test', image:blue, image_string:'blue'},{x:0, y:16, type:'test', image:blue, image_string:'blue'},{x:-32, y:32, type:'test', image:blue, image_string:'blue'},{x:16, y:32, type:'test', image:blue, image_string:'blue'}]
--CANVAS OPTIONS:
-document.getElementById('canvas_name').value = 'game';document.getElementById('texture_dimensions').value = 16;document.getElementById('gridheight').value = 6;document.getElementById('gridwidth').value = 6;
--------------------------------------
-            */
+            
+            function jsfile() {
+                get_tiles();
+                
+                download(canvas_name + ".js","var " + canvas_name + " = " + "[" + get_tile_list + "];");
+            }
+            
+            //!!! this is not my function, I will understand how it works later
+            function download(filename, text) {
+                var element = document.createElement('a');
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                element.setAttribute('download', filename);
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+            }
         </script>
     </body>
 </html>
