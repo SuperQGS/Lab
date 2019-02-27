@@ -157,7 +157,9 @@
                 while (loop) {
                     if (new_tile_num < num_of_tiles) {
                         change_tile = tiles[new_tile_num];
-                        if (change_tile.type == "wall" || change_tile.type == "yellow_door" || change_tile.type == "red_door" || change_tile.type == "green_door" || change_tile.type == "orange_door" || change_tile.type == "yellow_key" || change_tile.type == "red_key" || change_tile.type == "green_key" || change_tile.type == "orange_key") {
+                        
+                        //get rid of this if/else its completely useless
+                        if (loop) {
                             
                             var coord_spoof_x = 0;
                             var coord_spoof_y = 0;
@@ -252,6 +254,14 @@
             var orange = false;
             //shooting
             var shooting = false;
+            //weapons
+            var hammer = false;
+            var bow = false;
+            var crossbow = false;
+            var cannon = false;
+            var raycast = false;
+            //holding weapon
+            var weapon = "empty";
             
             //test for what key is down, set direction variable to it's direction and sets north/south/east/west to true
             window.addEventListener("keydown", binds, false);
@@ -301,8 +311,24 @@
                     if (shooting == false) {
                         shooting = true;
                         startshoot();
-                    }
-                    
+                    }   
+                }
+                
+                //weapon select
+                if (e.keycode == "49" && hammer == true) {
+                    weapon = "hammer";
+                }
+                if (e.keycode == "50" && bow == true) {
+                    weapon = "bow";
+                }
+                if (e.keycode == "51" && crossbow == true) {
+                    weapon = "crossbow";
+                }
+                if (e.keycode == "52" && cannon == true) {
+                    weapon = "cannon";
+                }
+                if (e.keycode == "53" && raycast == true) {
+                    weapon = "raycast";
                 }
             }
             
@@ -357,7 +383,7 @@
             //500
             function startshoot() {
                 if (shooting == true) {
-                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks'}//!!!add new atrribute weapon:"bow","crossbow"etc
+                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks'}//!!!add new atrribute weapon:"bow","crossbow"etc, and maybe "velocity" and "damage"
                     //shooting = false;
                     //setTimeout(function(){ shoot(); }, 100);
                 }
