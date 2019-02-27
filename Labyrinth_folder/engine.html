@@ -51,6 +51,9 @@
             <img src="images/arrow_s.png" id="arrow_s">
             <img src="images/arrow_w.png" id="arrow_w">
             <img src="images/arrow_e.png" id="arrow_e">
+            
+            <img src="images/health.png" id="health">
+            <img src="images/bow.png" id="imgbow">
         </div>
             
 
@@ -79,6 +82,7 @@
             var change_tile = 0;
             var new_tile_num = 0;
             window.setInterval(function(){ render(); }, 0);
+            //window.setInterval(function(){ develop2(); }, 0);
             function render() {
                 var new_tile_num = 0;
                 var num_of_tiles = tiles.length - 1;
@@ -95,6 +99,8 @@
                         new_tile_num = new_tile_num + 1;
                     } else {
                         loop = false;
+                        gui();
+                        develop2();
                     }
                 }
             }
@@ -107,7 +113,15 @@
             var coord_tick_multiplier = 1;
             var shoot_tick_multiplier = 1;
             function develop() {
+                //set character
+                set_character();
                 
+                //this is the line that finally renders the tile
+                ctx.drawImage(change_tile.image, change_tile.x + grid_width/2 - player1_x, change_tile.y + grid_height/2 - player1_y);
+            }
+            
+            //develop 2 function, for things that dont affect how the tile needs to be placed
+            function develop2() {
                 //set coordinates, delayed to tick
                 var coord_tick = tick / coord_tick_multiplier;
                 if (coord_tick > 25) {
@@ -122,13 +136,7 @@
                     shoot_tick_multiplier = shoot_tick_multiplier + 1;
                 }
                 
-                //set character
-                set_character();
-                
-                //this is the line that finally renders the tile
-                ctx.drawImage(change_tile.image, change_tile.x + grid_width/2 - player1_x, change_tile.y + grid_height/2 - player1_y);
             }
-            
             function set_character() {
                 if (change_tile.type == "player") {
                     //set player coordinates to player tile
@@ -383,6 +391,7 @@
             //500
             function startshoot() {
                 if (shooting == true) {
+                    ammo = ammo - 1;
                     tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks'}//!!!add new atrribute weapon:"bow","crossbow"etc, and maybe "velocity" and "damage"
                     //shooting = false;
                     //setTimeout(function(){ shoot(); }, 100);
@@ -416,6 +425,20 @@
                                 change_tile.x = change_tile.x - 1;
                             }
                         }
+                        var s2new_tile_num = 0;
+                        var s2num_of_tiles = tiles.length;
+                        var wall_test;
+                        if (s2new_tile_num < s2num_of_tiles) {
+                            wall_test = tiles[s2new_tile_num];
+                            if (wall_test.type == "wall") {
+                                if (wall_test.x == change_tile.x && wall_test.y == change_tile.y) {
+                                    console.log("hello world");
+                                }
+                            }
+                            s2new_tile_num = s2new_tile_num + 1;
+                        }
+                        
+                        
                     snew_tile_num = snew_tile_num + 1;
                     } else {
                         sloop = false;
@@ -431,6 +454,41 @@
                 }
                 tick = Date.now() - start_tick;
                 //console.log(tick);
+            }
+            
+            var ammo = 100;
+            function gui() {
+                //draw bar
+                ctx.rect(0, 75, 100, 80);
+                ctx.fillStyle = "#7a5b23";
+                ctx.fill();
+                
+                //draw health
+                ctx.drawImage(health,1,76);
+                ctx.font = "9px Verdana";
+                ctx.fillStyle = "white";
+                ctx.fillText(ammo + "", 9, 83);
+                
+                //draw health
+                ctx.drawImage(imgbow,30,76);
+                ctx.font = "9px Verdana";
+                ctx.fillStyle = "white";
+                ctx.fillText(ammo + "", 38, 83);
+                
+                if (red == true) {
+                    ctx.drawImage(red_key,58,76);
+                }
+                if (yellow == true) {
+                    ctx.drawImage(yellow_key,68,76);
+                }
+                if (orange == true) {
+                    ctx.drawImage(orange_key,78,76);
+                }
+                if (green == true) {
+                    ctx.drawImage(green_key,88,76);
+                }
+                
+                
             }
         </script>
     </body>
