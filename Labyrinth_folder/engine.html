@@ -89,6 +89,7 @@
                         change_tile.x = change_tile.x;
                         change_tile.y = change_tile.y;
                         ctx.imageSmoothingEnabled = false;
+                        real_time_tick();
                         develop();
                         change_tile = "";
                         new_tile_num = new_tile_num + 1;
@@ -103,7 +104,32 @@
             //x:
             //y:
             //type:
+            var coord_tick_multiplier = 1;
+            var shoot_tick_multiplier = 1;
             function develop() {
+                
+                //set coordinates, delayed to tick
+                var coord_tick = tick / coord_tick_multiplier;
+                if (coord_tick > 25) {
+                    set_coordinates()
+                    coord_tick_multiplier = coord_tick_multiplier + 1;
+                }
+                
+                //shoot movement, delayed to tick
+                var shoot_tick = tick / shoot_tick_multiplier;
+                if (shoot_tick > 10) {
+                    shoot()
+                    shoot_tick_multiplier = shoot_tick_multiplier + 1;
+                }
+                
+                //set character
+                set_character();
+                
+                //this is the line that finally renders the tile
+                ctx.drawImage(change_tile.image, change_tile.x + grid_width/2 - player1_x, change_tile.y + grid_height/2 - player1_y);
+            }
+            
+            function set_character() {
                 if (change_tile.type == "player") {
                     //set player coordinates to player tile
                     change_tile.x = player1_x;
@@ -122,11 +148,7 @@
                         change_tile.image = player_r;
                     }
                 }
-                
-                //this is the line that finally renders the tile
-                ctx.drawImage(change_tile.image, change_tile.x + grid_width/2 - player1_x, change_tile.y + grid_height/2 - player1_y);
             }
-            
             
             function collision(labeldir) {
                 var new_tile_num = 0;
@@ -278,6 +300,7 @@
                 if (e.keyCode == "32") {
                     if (shooting == false) {
                         shooting = true;
+                        startshoot();
                     }
                     
                 }
@@ -311,7 +334,6 @@
             }
             
             //add coordinate by 1, depending on if the direction is true and if it doesn't collide
-            window.setInterval(function(){ set_coordinates(); }, 25);
             function set_coordinates() {
                 //north
                 if (north == true && !collision("north")) {
@@ -332,7 +354,7 @@
             }
             
             //SHOOT
-            window.setInterval(function(){ startshoot(); }, 500);
+            //500
             function startshoot() {
                 if (shooting == true) {
                     tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks'}//!!!add new atrribute weapon:"bow","crossbow"etc
@@ -342,7 +364,7 @@
             }
             
             
-            window.setInterval(function(){ shoot(); }, 10);
+            //10
             function shoot() {
                 var snew_tile_num = 0;
                 var snum_of_tiles = tiles.length;
@@ -373,6 +395,16 @@
                         sloop = false;
                     }
                 }
+            }
+            
+            var start_tick = 0;
+            var tick = 1;
+            function real_time_tick() {
+                if (start_tick == 0) {
+                    start_tick = Date.now();
+                }
+                tick = Date.now() - start_tick;
+                //console.log(tick);
             }
         </script>
     </body>
