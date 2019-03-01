@@ -428,7 +428,23 @@
                                 change_tile.x = change_tile.x - 1;
                             }
                             
-                            
+                            var snew_tile_num2 = 0;
+                            var snum_of_tiles2 = tiles.length;
+                            var sloop2 = true;
+                            while (sloop2) {
+                                if (snew_tile_num2 < snum_of_tiles2) {
+                                    wall_tile = tiles[snew_tile_num2];
+                                    if (wall_tile.type == "wall") {
+                                        if (change_tile.x < wall_tile.x + 7 && change_tile.x + 7 > wall_tile.x && change_tile.y < wall_tile.y + 7 && change_tile.y + 7 > wall_tile.y) {
+                                            change_tile.x = 99999999;
+                                            change_tile.y = 99999999;
+                                        }
+                                    }
+                                snew_tile_num2 = snew_tile_num2 + 1;
+                                } else {
+                                    sloop2 = false;
+                                }
+                            }
                         }
                         
                         
