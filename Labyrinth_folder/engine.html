@@ -53,7 +53,11 @@
             <img src="images/arrow_e.png" id="arrow_e">
             
             <img src="images/health.png" id="health">
+            <img src="images/hammer.png" id="imghammer">
             <img src="images/bow.png" id="imgbow">
+            <img src="images/crossbow.png" id="imgcrossbow">
+            <img src="images/cannon.png" id="imgcannon">
+            <img src="images/raycaster.png" id="imgraycaster">
         </div>
             
 
@@ -266,13 +270,22 @@
             //shooting
             var shooting = false;
             //weapons
-            var hammer = false;
-            var bow = false;
-            var crossbow = false;
-            var cannon = false;
-            var raycast = false;
+            var hammer = true;
+            var bow = true;
+            var crossbow = true;
+            var cannon = true;
+            var raycast = true;
+            //weapon ammo
+            var hammer_a = "∞";
+            var bow_a = 100;
+            var crossbow_a = 25;
+            var cannon_a = 10;
+            var raycast_a = 555;
+            //weapon image
+            var imgweapon = imghammer;
             //holding weapon
             var weapon = "empty";
+            var current_ammo = hammer_a;
             
             //test for what key is down, set direction variable to it's direction and sets north/south/east/west to true
             window.addEventListener("keydown", binds, false);
@@ -326,20 +339,30 @@
                 }
                 
                 //weapon select
-                if (e.keycode == "49" && hammer == true) {
+                if (e.keyCode == "49" && hammer == true) {
                     weapon = "hammer";
+                    imgweapon = imghammer;
+                    current_ammo = hammer_a;
                 }
-                if (e.keycode == "50" && bow == true) {
+                if (e.keyCode == "50" && bow == true) {
                     weapon = "bow";
+                    imgweapon = imgbow;
+                    current_ammo = bow_a;
                 }
-                if (e.keycode == "51" && crossbow == true) {
+                if (e.keyCode == "51" && crossbow == true) {
                     weapon = "crossbow";
+                    imgweapon = imgcrossbow;
+                    current_ammo = crossbow_a
                 }
-                if (e.keycode == "52" && cannon == true) {
+                if (e.keyCode == "52" && cannon == true) {
                     weapon = "cannon";
+                    imgweapon = imgcannon;
+                    current_ammo = cannon_a;
                 }
-                if (e.keycode == "53" && raycast == true) {
+                if (e.keyCode == "53" && raycast == true) {
                     weapon = "raycast";
+                    imgweapon = imgraycaster;
+                    current_ammo = raycast_a;
                 }
             }
             
@@ -394,7 +417,25 @@
             //500
             function startshoot() {
                 if (shooting == true) {
-                    ammo = ammo - 1;
+                    if (weapon == "hammer") {
+                        //inf ammo
+                    }
+                    if (weapon == "bow") {
+                        bow_a = bow_a - 1;
+                        current_ammo = bow_a
+                    }
+                    if (weapon == "crossbow") {
+                        crossbow_a = crossbow_a - 1;
+                        current_ammo = crossbow_a
+                    }
+                    if (weapon == "cannon") {
+                        cannon_a = cannon_a - 1;
+                        current_ammo = cannon_a
+                    }
+                    if (weapon == "raycast") {
+                        raycast_a = raycast_a - 1;
+                        current_ammo = raycast_a;
+                    }
                     tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks'}//!!!add new atrribute weapon:"bow","crossbow"etc, and maybe "velocity" and "damage"
                     //shooting = false;
                     //setTimeout(function(){ shoot(); }, 100);
@@ -470,18 +511,17 @@
             var ammo = 100;
             ctx.rect(0, 75, 98, 75);
             function gui() {
-                old_ammo = ammo;
                 //draw health
                 ctx.drawImage(health,1,76);
                 ctx.font = "9px Verdana";
                 ctx.fillStyle = "white";
                 ctx.fillText(ammo + "", 9, 83)
                 
-                //draw health
-                ctx.drawImage(imgbow,30,76);
+                //draw ammo
+                ctx.drawImage(imgweapon,30,76);
                 ctx.font = "9px Verdana";
                 ctx.fillStyle = "white";
-                ctx.fillText(ammo + "", 38, 83);
+                ctx.fillText(current_ammo + "", 38, 83);
                 
                 if (red == true) {
                     ctx.drawImage(red_key,59,76);
