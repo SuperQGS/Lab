@@ -84,6 +84,8 @@
             window.setInterval(function(){ render(); }, 0);
             //window.setInterval(function(){ develop2(); }, 0);
             function render() {
+                ctx.fillStyle = "#000000";
+                ctx.fill();
                 var new_tile_num = 0;
                 var num_of_tiles = tiles.length - 1;
                 var loop = true;
@@ -99,10 +101,11 @@
                         new_tile_num = new_tile_num + 1;
                     } else {
                         loop = false;
-                        gui();
-                        develop2();
+                        
                     }
                 }
+                develop2();
+                gui();
             }
             
             //developer function
@@ -110,8 +113,8 @@
             //x:
             //y:
             //type:
-            var coord_tick_multiplier = 1;
-            var shoot_tick_multiplier = 1;
+            var coord_tick_multiplier = 0;
+            var shoot_tick_multiplier = 0;
             function develop() {
                 //set character
                 set_character();
@@ -123,17 +126,17 @@
             //develop 2 function, for things that dont affect how the tile needs to be placed
             function develop2() {
                 //set coordinates, delayed to tick
-                var coord_tick = tick / coord_tick_multiplier;
+                var coord_tick = tick - coord_tick_multiplier;
                 if (coord_tick > 25) {
                     set_coordinates()
-                    coord_tick_multiplier = coord_tick_multiplier + 1;
+                    coord_tick_multiplier = tick;
                 }
                 
                 //shoot movement, delayed to tick
-                var shoot_tick = tick / shoot_tick_multiplier;
+                var shoot_tick = tick - shoot_tick_multiplier;
                 if (shoot_tick > 10) {
                     shoot()
-                    shoot_tick_multiplier = shoot_tick_multiplier + 1;
+                    shoot_tick_multiplier = tick;
                 }
                 
             }
@@ -412,31 +415,22 @@
                                 change_tile.image = arrow_n;
                                 change_tile.y = change_tile.y - 1;
                             }
-                            if (change_tile.dir == "south") {
+                            else if (change_tile.dir == "south") {
                                 change_tile.image = arrow_s;
                                 change_tile.y = change_tile.y + 1;
                             }
-                            if (change_tile.dir == "east") {
+                            else if (change_tile.dir == "east") {
                                 change_tile.image = arrow_e;
                                 change_tile.x = change_tile.x + 1;
                             }
-                            if (change_tile.dir == "west") {
+                            else if (change_tile.dir == "west") {
                                 change_tile.image = arrow_w;
                                 change_tile.x = change_tile.x - 1;
                             }
+                            
+                            
                         }
-                        var s2new_tile_num = 0;
-                        var s2num_of_tiles = tiles.length;
-                        var wall_test;
-                        if (s2new_tile_num < s2num_of_tiles) {
-                            wall_test = tiles[s2new_tile_num];
-                            if (wall_test.type == "wall") {
-                                if (wall_test.x == change_tile.x && wall_test.y == change_tile.y) {
-                                    console.log("hello world");
-                                }
-                            }
-                            s2new_tile_num = s2new_tile_num + 1;
-                        }
+                        
                         
                         
                     snew_tile_num = snew_tile_num + 1;
@@ -457,17 +451,14 @@
             }
             
             var ammo = 100;
+            ctx.rect(0, 75, 98, 75);
             function gui() {
-                //draw bar
-                ctx.rect(0, 75, 100, 80);
-                ctx.fillStyle = "#7a5b23";
-                ctx.fill();
-                
+                old_ammo = ammo;
                 //draw health
                 ctx.drawImage(health,1,76);
                 ctx.font = "9px Verdana";
                 ctx.fillStyle = "white";
-                ctx.fillText(ammo + "", 9, 83);
+                ctx.fillText(ammo + "", 9, 83)
                 
                 //draw health
                 ctx.drawImage(imgbow,30,76);
@@ -476,16 +467,16 @@
                 ctx.fillText(ammo + "", 38, 83);
                 
                 if (red == true) {
-                    ctx.drawImage(red_key,58,76);
+                    ctx.drawImage(red_key,59,76);
                 }
                 if (yellow == true) {
-                    ctx.drawImage(yellow_key,68,76);
+                    ctx.drawImage(yellow_key,69,76);
                 }
                 if (orange == true) {
-                    ctx.drawImage(orange_key,78,76);
+                    ctx.drawImage(orange_key,79,76);
                 }
                 if (green == true) {
-                    ctx.drawImage(green_key,88,76);
+                    ctx.drawImage(green_key,89,76);
                 }
                 
                 
