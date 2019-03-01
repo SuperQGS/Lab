@@ -438,6 +438,7 @@
                                         if (change_tile.x < wall_tile.x + 7 && change_tile.x + 7 > wall_tile.x && change_tile.y < wall_tile.y + 7 && change_tile.y + 7 > wall_tile.y) {
                                             change_tile.x = 99999999;
                                             change_tile.y = 99999999;
+                                            change_tile.type = "deleted arrow";
                                         }
                                     }
                                 snew_tile_num2 = snew_tile_num2 + 1;
