@@ -415,28 +415,34 @@
             
             //SHOOT
             //500
+            var velocity;
             function startshoot() {
-                if (shooting == true) {
+                if (current_ammo > 0 || (weapon == "hammer") && shooting == true) {
                     if (weapon == "hammer") {
                         //inf ammo
+                        velocity = 0;
                     }
                     if (weapon == "bow") {
                         bow_a = bow_a - 1;
                         current_ammo = bow_a
+                        velocity = 1
                     }
                     if (weapon == "crossbow") {
                         crossbow_a = crossbow_a - 1;
                         current_ammo = crossbow_a
+                        velocity = 3;
                     }
                     if (weapon == "cannon") {
                         cannon_a = cannon_a - 1;
                         current_ammo = cannon_a
+                        velocity = 0.25;
                     }
                     if (weapon == "raycast") {
                         raycast_a = raycast_a - 1;
                         current_ammo = raycast_a;
+                        velocity = 6;
                     }
-                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks'}//!!!add new atrribute weapon:"bow","crossbow"etc, and maybe "velocity" and "damage"
+                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks', vel:velocity}//!!!add new atrribute weapon:"bow","crossbow"etc, and maybe "velocity" and "damage"
                     //shooting = false;
                     //setTimeout(function(){ shoot(); }, 100);
                 }
@@ -454,19 +460,19 @@
                         if (change_tile.type == "arrow") {
                             if (change_tile.dir == "north") {
                                 change_tile.image = arrow_n;
-                                change_tile.y = change_tile.y - 1;
+                                change_tile.y = change_tile.y - change_tile.vel;
                             }
                             else if (change_tile.dir == "south") {
                                 change_tile.image = arrow_s;
-                                change_tile.y = change_tile.y + 1;
+                                change_tile.y = change_tile.y + change_tile.vel;
                             }
                             else if (change_tile.dir == "east") {
                                 change_tile.image = arrow_e;
-                                change_tile.x = change_tile.x + 1;
+                                change_tile.x = change_tile.x + change_tile.vel;
                             }
                             else if (change_tile.dir == "west") {
                                 change_tile.image = arrow_w;
-                                change_tile.x = change_tile.x - 1;
+                                change_tile.x = change_tile.x - change_tile.vel;
                             }
                             
                             var snew_tile_num2 = 0;
