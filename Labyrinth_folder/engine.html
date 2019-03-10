@@ -67,9 +67,7 @@
             //PASTE CANVAS VARIABLES UNDER HERE
             var canvas_name = "game"; var texture_dimensions = 7; var grid_height = 84; var grid_width = 98;
             //PASTE TILES UNDER HERE
-            
-            
-            var tiles = keydoortest;
+            var tiles = [];
             //push player tile
             var player_tile = {x:0, y:0, type:'player', image:player, image_string:'player'}; tiles.push(player_tile);
             
@@ -198,22 +196,22 @@
                                     }
                                 }
                                 else if (change_tile.type == "yellow_key") {
-                                    change_tile.x = 9999999999999999;
+                                    change_tile.x = 99999999;
                                     yellow = true;
                                     return false;
                                 }
                                 else if (change_tile.type == "red_key") {
-                                    change_tile.x = 9999999999999999;
+                                    change_tile.x = 99999999;
                                     red = true;
                                     return false;
                                 }
                                 else if (change_tile.type == "green_key") {
-                                    change_tile.x = 9999999999999999;
+                                    change_tile.x = 99999999;
                                     green = true;
                                     return false;
                                 }
                                 else if (change_tile.type == "orange_key") {
-                                    change_tile.x = 9999999999999999;
+                                    change_tile.x = 99999999;
                                     orange = true;
                                     return false;
                                 }
@@ -276,7 +274,7 @@
             var cannon = true;
             var raycast = true;
             //weapon ammo
-            var hammer_a = "∞";
+            var hammer_a = "INF";
             var bow_a = 100;
             var crossbow_a = 25;
             var cannon_a = 10;
@@ -542,6 +540,24 @@
                     ctx.drawImage(green_key,89,76);
                 }
                 
+            }
+            
+            function load_level(lvlname, lvlstring) {
+                red = false;
+                green = false;
+                yellow = false;
+                orange = false;
+                
+                var head = document.getElementsByTagName('head')[0];
+                var script = document.createElement('script');
+                script.src = 'maps/'+ lvlstring +'.js';
+                head.appendChild(script);
+                //https://stackoverflow.com/questions/9642205/how-to-force-a-script-reload-and-re-execute
+                //this took me a solid day to figure out holy cow why do object arrays not work like how they logically should.
+                
+                
+                tiles = lvlname;
+                var player_tile = {x:0, y:0, type:'player', image:player, image_string:'player'}; tiles.push(player_tile);
                 
             }
         </script>
