@@ -51,6 +51,9 @@
             <img src="images/arrow_s.png" id="arrow_s">
             <img src="images/arrow_w.png" id="arrow_w">
             <img src="images/arrow_e.png" id="arrow_e">
+            <img src="images/cannonball.png" id = "cannonball">
+            <img src="images/lazer_ns.png" id = "lazer_ns">
+            <img src="images/lazer_ew.png" id = "lazer_ew">
             
             <img src="images/health.png" id="health">
             <img src="images/hammer.png" id="imghammer">
@@ -438,19 +441,19 @@
                         bow_a = bow_a - 1;
                         current_ammo = bow_a
                         velocity = 1;
-                        cooldown = 100;
+                        cooldown = 200;
                     }
                     if (weapon == "crossbow") {
                         crossbow_a = crossbow_a - 1;
                         current_ammo = crossbow_a
-                        velocity = 3;
-                        cooldown = 500;
+                        velocity = 6;
+                        cooldown = 1500;
                     }
                     if (weapon == "cannon") {
                         cannon_a = cannon_a - 1;
                         current_ammo = cannon_a
-                        velocity = 0.25;
-                        cooldown = 400;
+                        velocity = 0.5;
+                        cooldown = 500;
                     }
                     if (weapon == "raycast") {
                         raycast_a = raycast_a - 1;
@@ -458,7 +461,39 @@
                         velocity = 6;
                         cooldown = 5;
                     }
-                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks', vel:velocity}//!!!add new atrribute weapon:"bow","crossbow"etc, and maybe "velocity" and "damage"
+                    
+                    var projectile_image;
+                    if (weapon == "hammer") {
+                        projectile_image = imghammer;
+                    }
+                    
+                    if (weapon == "bow" || weapon == "crossbow") {
+                        if (direction == "north") {
+                            projectile_image = arrow_n;
+                        }
+                        else if (direction == "south") {
+                            projectile_image = arrow_s;
+                        }
+                        else if (direction == "east") {
+                            projectile_image = arrow_e;
+                        }
+                        else if (direction == "west") {
+                            projectile_image = arrow_w;
+                        }
+                    }
+                    if (weapon == "cannon") {
+                        projectile_image = cannonball;
+                    }
+                    if (weapon == "raycast") {
+                        if (direction == "north" || direction == "south") {
+                            projectile_image = lazer_ns;
+                        }
+                        if (direction == "east" || direction == "west") {
+                            projectile_image = lazer_ew;
+                        }
+                    }
+                    
+                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:projectile_image, image_string:'idk', vel:velocity}//!!!add new atrribute weapon:"bow","crossbow"etc, and maybe "velocity" and "damage"
                     //shooting = false;
                     //setTimeout(function(){ shoot(); }, 100);
                 }
@@ -475,19 +510,19 @@
                         change_tile = tiles[snew_tile_num];
                         if (change_tile.type == "arrow") {
                             if (change_tile.dir == "north") {
-                                change_tile.image = arrow_n;
+                                //change_tile.image = arrow_n;
                                 change_tile.y = change_tile.y - change_tile.vel;
                             }
                             else if (change_tile.dir == "south") {
-                                change_tile.image = arrow_s;
+                                //change_tile.image = arrow_s;
                                 change_tile.y = change_tile.y + change_tile.vel;
                             }
                             else if (change_tile.dir == "east") {
-                                change_tile.image = arrow_e;
+                                //change_tile.image = arrow_e;
                                 change_tile.x = change_tile.x + change_tile.vel;
                             }
                             else if (change_tile.dir == "west") {
-                                change_tile.image = arrow_w;
+                                //change_tile.image = arrow_w;
                                 change_tile.x = change_tile.x - change_tile.vel;
                             }
                             
