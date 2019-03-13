@@ -117,8 +117,7 @@
             //x:
             //y:
             //type:
-            var coord_tick_multiplier = 0;
-            var shoot_tick_multiplier = 0;
+            
             function develop() {
                 //set character
                 set_character();
@@ -127,7 +126,9 @@
                 ctx.drawImage(change_tile.image, change_tile.x + grid_width/2 - player1_x, change_tile.y + grid_height/2 - player1_y);
             }
             
-            //develop 2 function, for things that dont affect how the tile needs to be placed
+            //develop 2 function, for things that dont affect how the tile needs to be placed mostly sometimes idk it's run every frame not every tick for this
+            var coord_tick_multiplier = 0;
+            var shoot_tick_multiplier = 0;
             function develop2() {
                 //set coordinates, delayed to tick
                 var coord_tick = tick - coord_tick_multiplier;
@@ -142,6 +143,8 @@
                     shoot()
                     shoot_tick_multiplier = tick;
                 }
+                
+                startstartshoot();
                 
             }
             function set_character() {
@@ -332,10 +335,7 @@
                 
                 //SHOOT
                 if (e.keyCode == "32") {
-                    if (shooting == false) {
-                        shooting = true;
-                        startshoot();
-                    }   
+                    shooting = true;
                 }
                 
                 //weapon select
@@ -414,33 +414,49 @@
             }
             
             //SHOOT
-            //500
+            var cooldown = 0;
+            var startstart_tick_multiplier = 0;
+            function startstartshoot() {
+                if (shooting == true) {
+                var startstart_tick = tick - startstart_tick_multiplier;
+                if (startstart_tick > cooldown) {
+                    startshoot();
+                    startstart_tick_multiplier = tick;
+                }
+                }
+            }
+            
             var velocity;
             function startshoot() {
-                if (current_ammo > 0 || (weapon == "hammer") && shooting == true) {
+                if ((current_ammo > 0 || (weapon == "hammer")) && shooting == true) {
                     if (weapon == "hammer") {
                         //inf ammo
                         velocity = 0;
+                        cooldown = 300;
                     }
                     if (weapon == "bow") {
                         bow_a = bow_a - 1;
                         current_ammo = bow_a
-                        velocity = 1
+                        velocity = 1;
+                        cooldown = 100;
                     }
                     if (weapon == "crossbow") {
                         crossbow_a = crossbow_a - 1;
                         current_ammo = crossbow_a
                         velocity = 3;
+                        cooldown = 500;
                     }
                     if (weapon == "cannon") {
                         cannon_a = cannon_a - 1;
                         current_ammo = cannon_a
                         velocity = 0.25;
+                        cooldown = 400;
                     }
                     if (weapon == "raycast") {
                         raycast_a = raycast_a - 1;
                         current_ammo = raycast_a;
                         velocity = 6;
+                        cooldown = 5;
                     }
                     tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:arrow_n, image_string:'stone_bricks', vel:velocity}//!!!add new atrribute weapon:"bow","crossbow"etc, and maybe "velocity" and "damage"
                     //shooting = false;
