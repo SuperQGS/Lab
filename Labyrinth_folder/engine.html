@@ -223,6 +223,44 @@
                                     orange = true;
                                     return false;
                                 }
+                                
+                                //weapon pickups
+                                else if (change_tile.type == "bow") {
+                                    bow = true;
+                                    bow_a = bow_a + 5;
+                                }
+                                
+                                else if (change_tile.type == "crossbow") {
+                                    crossbow = true;
+                                    crossbow_a = crossbow_a + 3;
+                                }
+                                
+                                else if (change_tile.type == "cannon") {
+                                    cannon = true;
+                                    cannon_a = cannon_a + 2;
+                                }
+                                
+                                else if (change_tile.type == "raycast") {
+                                    raycast = true;
+                                    raycast_a = raycast_a + 25;
+                                }
+                                
+                                //ammo pickups
+                                else if (change_tile.type == "bow_ammo") {
+                                    bow_a = bow_a + 10;
+                                }
+                                
+                                else if (change_tile.type == "crossbow_ammo") {
+                                    crossbow_a = crossbow_a + 4;
+                                }
+                                
+                                else if (change_tile.type == "cannon_ammo") {
+                                    cannon_a = cannon_a + 5;
+                                }
+                                
+                                else if (change_tile.type == "raycast_ammo") {
+                                    raycast_a = raycast_a + 100;
+                                }
                             }
                         }
                         new_tile_num = new_tile_num + 1;
@@ -437,30 +475,35 @@
                         //inf ammo
                         velocity = 0.5;
                         cooldown = 300;
+                        weapon_damage = 10;
                     }
                     if (weapon == "bow") {
                         bow_a = bow_a - 1;
                         current_ammo = bow_a
                         velocity = 1;
                         cooldown = 200;
+                        weapon_damage = 5;
                     }
                     if (weapon == "crossbow") {
                         crossbow_a = crossbow_a - 1;
                         current_ammo = crossbow_a
                         velocity = 6;
                         cooldown = 1500;
+                        weapon_damage = 30;
                     }
                     if (weapon == "cannon") {
                         cannon_a = cannon_a - 1;
                         current_ammo = cannon_a
                         velocity = 0.5;
                         cooldown = 500;
+                        weapon_damage = 100;
                     }
                     if (weapon == "raycast") {
                         raycast_a = raycast_a - 1;
                         current_ammo = raycast_a;
                         velocity = 6;
                         cooldown = 5;
+                        weapon_damage = 5;
                     }
                     
                     var projectile_image;
@@ -494,7 +537,7 @@
                         }
                     }
                     
-                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:projectile_image, image_string:'idk', vel:velocity, proj_weapon:weapon, distance:0}//!!!add new atrribute weapon:"bow","crossbow"etc, and maybe "velocity" and "damage"
+                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:projectile_image, image_string:'idk', vel:velocity, proj_weapon:weapon, distance:0, damage:weapon_damage}//!!!add new atrribute weapon:"bow","crossbow"etc, and maybe "velocity" and "damage"
                     //shooting = false;
                     //setTimeout(function(){ shoot(); }, 100);
                 }
