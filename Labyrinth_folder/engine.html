@@ -434,7 +434,7 @@
                 if ((current_ammo > 0 || (weapon == "hammer")) && shooting == true) {
                     if (weapon == "hammer") {
                         //inf ammo
-                        velocity = 0;
+                        velocity = 0.5;
                         cooldown = 300;
                     }
                     if (weapon == "bow") {
@@ -493,7 +493,7 @@
                         }
                     }
                     
-                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:projectile_image, image_string:'idk', vel:velocity}//!!!add new atrribute weapon:"bow","crossbow"etc, and maybe "velocity" and "damage"
+                    tiles[tiles.length] = {x:player1_x, y:player1_y, type:"arrow", dir:direction, image:projectile_image, image_string:'idk', vel:velocity, proj_weapon:weapon, distance:0}//!!!add new atrribute weapon:"bow","crossbow"etc, and maybe "velocity" and "damage"
                     //shooting = false;
                     //setTimeout(function(){ shoot(); }, 100);
                 }
@@ -509,6 +509,12 @@
                     if (snew_tile_num < snum_of_tiles) {
                         change_tile = tiles[snew_tile_num];
                         if (change_tile.type == "arrow") {
+                            change_tile.distance = change_tile.distance + change_tile.vel;
+                            if (change_tile.proj_weapon == "hammer" && change_tile.distance == 7) {
+                                change_tile.x = 9999999;
+                            }
+                            
+                            
                             if (change_tile.dir == "north") {
                                 //change_tile.image = arrow_n;
                                 change_tile.y = change_tile.y - change_tile.vel;
