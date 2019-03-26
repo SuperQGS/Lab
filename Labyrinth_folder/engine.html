@@ -147,6 +147,11 @@
                     shoot_tick_multiplier = tick;
                 }
                 
+                if (hp < 1) {
+                    hp = 0;
+                    console.log("GAME OVER FUNCTION");
+                }
+                
                 startstartshoot();
                 
             }
@@ -301,6 +306,8 @@
             var player1_y = -7;
             //orientation
             var direction = "south";
+            //health
+            var hp = 100;
             //movement
             var north = false;
             var south = false;
@@ -314,17 +321,17 @@
             //shooting
             var shooting = false;
             //weapons
-            var hammer = true;
-            var bow = true;
-            var crossbow = true;
-            var cannon = true;
-            var raycast = true;
+            var hammer = false;
+            var bow = false;
+            var crossbow = false;
+            var cannon = false;
+            var raycast = false;
             //weapon ammo
             var hammer_a = "INF";
-            var bow_a = 100;
-            var crossbow_a = 25;
-            var cannon_a = 10;
-            var raycast_a = 555;
+            var bow_a = 0;
+            var crossbow_a = 0;
+            var cannon_a = 0;
+            var raycast_a = 0;
             //weapon image
             var imgweapon = imghammer;
             //holding weapon
@@ -615,14 +622,14 @@
                 //console.log(tick);
             }
             
-            var ammo = 100;
+
             ctx.rect(0, 75, 98, 75);
             function gui() {
                 //draw health
                 ctx.drawImage(health,1,76);
                 ctx.font = "9px Verdana";
                 ctx.fillStyle = "white";
-                ctx.fillText(ammo + "", 9, 83)
+                ctx.fillText(hp + "", 9, 83)
                 
                 //draw ammo
                 ctx.drawImage(imgweapon,30,76);
