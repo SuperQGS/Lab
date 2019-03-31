@@ -27,7 +27,7 @@
             <img src="images/wood.bmp" id="wood">
             <img src="images/barrel.bmp" id="barrel">
             <img src="images/chest.bmp" id="chest">
-            <img src="images/player_spawn.bmp" id="monster">
+            <img src="images/monster.bmp" id="monster">
             
             <img src="images/player_front.png" id="player">
             <img src="images/player_back.png" id="player_b">
@@ -74,7 +74,7 @@
             //PASTE TILES UNDER HERE
             var tiles = [];
             //push player tile
-            var player_tile = {x:0, y:0, type:'player', image:player, image_string:'player'}; tiles.push(player_tile);
+            var player_tile = {x:0, y:0, type:'player', image:player, image_string:'player'}; tiles.push(player_tile);            
             
             //canvas info
             var canvas = document.getElementById(canvas_name);
@@ -89,6 +89,8 @@
             var change_tile = 0;
             var new_tile_num = 0;
             window.setInterval(function(){ render(); }, 0);
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(0, 0, 150, 100)
             //window.setInterval(function(){ develop2(); }, 0);
             function render() {
                 ctx.fillStyle = "#000000";
@@ -114,6 +116,8 @@
                 develop2();
                 gui();
             }
+            
+           
             
             //developer function
             //NOTE: attributes of each tile are
@@ -670,6 +674,11 @@
                 var player_tile = {x:0, y:0, type:'player', image:player, image_string:'player'}; tiles.push(player_tile);
                 
             }
+            
+             //demo code
+            load_level(lab_lvl_01, "lab_lvl_01");
+            player1_x = -203;
+            player1_y = -133;
         </script>
     </body>
 </html>
