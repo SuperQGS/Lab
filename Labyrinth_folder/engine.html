@@ -142,7 +142,9 @@
             //develop 2 function, for things that dont affect how the tile needs to be placed mostly sometimes idk it's run every frame not every tick for this
             var coord_tick_multiplier = 0;
             var shoot_tick_multiplier = 0;
+            var skel_tick_multiplier = 0;
             function develop2() {
+                
                 //set coordinates, delayed to tick
                 var coord_tick = tick - coord_tick_multiplier;
                 if (coord_tick > 25) {
@@ -155,6 +157,13 @@
                 if (shoot_tick > 10) {
                     shoot()
                     shoot_tick_multiplier = tick;
+                }
+                
+                //shoot movement, delayed to tick
+                var skel_tick = tick - skel_tick_multiplier;
+                if (skel_tick > 10) {
+                    //monster();
+                    skel_tick_multiplier = tick;
                 }
                 
                 if (hp < 1) {
@@ -172,22 +181,68 @@
                 }
                 if (change_tile.type == "entity" && !(change_tile.x + monster_range < player1_x || change_tile.x - monster_range > player1_x) && !(change_tile.y + monster_range < player1_y || change_tile.y - monster_range > player1_y)) {
 
-                    if (change_tile.x > player1_x) {
-                        change_tile.x = change_tile.x - 0.1;
+                    if (change_tile.x > player1_x && monster_collision("west")) {
+                        change_tile.x = change_tile.x - 1;
                     }
-                    if (change_tile.x < player1_x) {
-                        change_tile.x = change_tile.x + 0.1;
+                    if (change_tile.x < player1_x && monster_collision("east")) {
+                        change_tile.x = change_tile.x + 1;
                     }
-                    if (change_tile.y > player1_y) {
-                        change_tile.y = change_tile.y - 0.1;
+                    if (change_tile.y > player1_y && monster_collision("north")) {
+                        change_tile.y = change_tile.y - 1;
                     }
-                    if (change_tile.y < player1_y) {
-                        change_tile.y = change_tile.y + 0.1;
+                    if (change_tile.y < player1_y && monster_collision("south")) {
+                        change_tile.y = change_tile.y + 1;
                     }
                 }
                 
             }
             
+            function monster_collision(mlabeldir) {
+                var mnew_tile_num = 0;
+                var mnum_of_tiles = tiles.length;
+                var mloop = true;
+                while (mloop) {
+                    var found_coll;
+                    if (mnew_tile_num < mnum_of_tiles) {
+                        mchange_tile = tiles[mnew_tile_num];
+                        
+                        //get rid of this if/else its completely useless
+                        if (mloop) {
+                            
+                            var mcoord_spoof_x = 0;
+                            var mcoord_spoof_y = 0;
+                            if (mlabeldir == "south") {
+                                mcoord_spoof_y = 1;
+                            }
+                            else if (mlabeldir == "north") {
+                                mcoord_spoof_y = 0 - 1;
+                            }
+                            else if (mlabeldir == "west") {
+                                mcoord_spoof_x = 0 - 1;
+                            }
+                            else if (mlabeldir == "east") {
+                                mcoord_spoof_x = 1;
+                            }
+                            if (mchange_tile.x < change_tile.x + 7 + mcoord_spoof_x && mchange_tile.x + 7 > change_tile.x + mcoord_spoof_x && mchange_tile.y < change_tile.y + 7 + mcoord_spoof_y && mchange_tile.y + 7 > change_tile.y + mcoord_spoof_y) {
+                                
+                                if (mchange_tile.type == "player" || mchange_tile.type == "wall" || mchange_tile.type == "yellow_door" || mchange_tile.type == "red_door" || mchange_tile.type == "green_door" || mchange_tile.type == "orange_door" || mchange_tile.type == "storage") {
+                                    found_coll = true;
+                                } else {
+                                    
+                                }
+                            }
+                        }
+                        mnew_tile_num = mnew_tile_num + 1;
+                    } else {
+                        mloop = false;
+                        if (found_coll) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                }
+            }
             
             function set_character() {
                 if (change_tile.type == "player") {
