@@ -128,7 +128,8 @@
             function develop() {
                 //set character
                 set_character();
-                
+                //
+                monster();
                 //this is the line that finally renders the tile
                 ctx.drawImage(change_tile.image, change_tile.x + grid_width/2 - player1_x, change_tile.y + grid_height/2 - player1_y);
             }
@@ -159,6 +160,25 @@
                 startstartshoot();
                 
             }
+            function monster() {
+                var monster_range = 7*5;
+                if (change_tile.type == "entity" && !(change_tile.x + monster_range < player1_x || change_tile.x - monster_range > player1_x) && !(change_tile.y + monster_range < player1_y || change_tile.y - monster_range > player1_y)) {
+                    
+                    if (change_tile.x > player1_x) {
+                        change_tile.x = change_tile.x - 0.1;
+                    }
+                    if (change_tile.x < player1_x) {
+                        change_tile.x = change_tile.x + 0.1;
+                    }
+                    if (change_tile.y > player1_y) {
+                        change_tile.y = change_tile.y - 0.1;
+                    }
+                    if (change_tile.y < player1_y) {
+                        change_tile.y = change_tile.y + 0.1;
+                    }
+                }
+            }
+            
             function set_character() {
                 if (change_tile.type == "player") {
                     //set player coordinates to player tile
