@@ -153,22 +153,25 @@
                 
                 //set coordinates, delayed to tick
                 var coord_tick = tick - coord_tick_multiplier;
-                if (coord_tick > 25) {
+                while (coord_tick > 25) {
+                    coord_tick = coord_tick - 25;
                     set_coordinates()
                     coord_tick_multiplier = tick;
                 }
                 
                 //shoot movement, delayed to tick
                 var shoot_tick = tick - shoot_tick_multiplier;
-                if (shoot_tick > 10) {
+                while (shoot_tick > 10) {
+                    shoot_tick = shoot_tick - 10;
                     shoot()
                     shoot_tick_multiplier = tick;
                 }
                 
-                //shoot movement, delayed to tick
+                //skeleton movement, delayed to tick
                 var skel_tick = tick - skel_tick_multiplier;
                 skeleton_move = false;
-                if (skel_tick > 50) {
+                while (skel_tick > 50) {
+                    skel_tick = skel_tick - 50
                     skeleton_move = true;
                     skel_tick_multiplier = tick;
                 }
@@ -272,10 +275,7 @@
                     }
                 }
                 
-                if (change_tile.type == "hitbox") {
-                    change_tile.x = player1_x;
-                    change_tile.y = player1_y;
-                }
+                
             }
             
             function collision(labeldir) {
@@ -560,6 +560,12 @@
                 //west
                 if (west == true && !collision("west")) {
                     player1_x = player1_x - 1;
+                }
+                
+                //hitbox
+                if (change_tile.type == "hitbox") {
+                    change_tile.x = player1_x;
+                    change_tile.y = player1_y;
                 }
             }
             
