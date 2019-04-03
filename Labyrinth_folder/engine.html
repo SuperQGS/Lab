@@ -33,6 +33,7 @@
             <img src="images/player_back.png" id="player_b">
             <img src="images/player_right.png" id="player_r">
             <img src="images/player_left.png" id="player_l">
+            <img src = "images/hitbox.png" id = "hitbox">
         
             <img src="images/door.bmp" id="door">
             <img src="images/yellow_door.bmp" id="yellow_door"><img src="images/yellow_door.bmp" id="yellowdoor">
@@ -74,7 +75,10 @@
             //PASTE TILES UNDER HERE
             var tiles = [];
             //push player tile
-            var player_tile = {x:0, y:0, type:'player', image:player, image_string:'player'}; tiles.push(player_tile);            
+            var player_tile = {x:0, y:0, type:'player', image:player, image_string:'player'};
+            tiles.push(player_tile);
+            var hitbox_tile = {x:0, y:0, type:'hitbox', image:hitbox, image_string:'hitbox'};
+            tiles.push(hitbox_tile);
             
             //canvas info
             var canvas = document.getElementById(canvas_name);
@@ -229,7 +233,7 @@
                             }
                             if (mchange_tile.x < change_tile.x + 7 + mcoord_spoof_x && mchange_tile.x + 7 > change_tile.x + mcoord_spoof_x && mchange_tile.y < change_tile.y + 7 + mcoord_spoof_y && mchange_tile.y + 7 > change_tile.y + mcoord_spoof_y) {
                                 
-                                if (mchange_tile.type == 'player' || mchange_tile.type == "wall" || mchange_tile.type == "yellow_door" || mchange_tile.type == "red_door" || mchange_tile.type == "green_door" || mchange_tile.type == "orange_door" || mchange_tile.type == "storage" || (mchange_tile != change_tile && mchange_tile.type == "entity")) {
+                                if (mchange_tile.type == "hitbox" || mchange_tile.type == "wall" || mchange_tile.type == "yellow_door" || mchange_tile.type == "red_door" || mchange_tile.type == "green_door" || mchange_tile.type == "orange_door" || mchange_tile.type == "storage" || (mchange_tile != change_tile && mchange_tile.type == "entity")) {
                                     found_coll = true;
                                 } else {
                                     
@@ -266,6 +270,11 @@
                     if (direction == "east") {
                         change_tile.image = player_r;
                     }
+                }
+                
+                if (change_tile.type == "hitbox") {
+                    change_tile.x = player1_x;
+                    change_tile.y = player1_y;
                 }
             }
             
@@ -761,6 +770,7 @@
                 
                 tiles = lvlname;
                 var player_tile = {x:0, y:0, type:'player', image:player, image_string:'player'}; tiles.push(player_tile);
+                var hitbox_tile = {x:0, y:0, type:'hitbox', image:hitbox, image_string:'hitbox'}; tiles.push(hitbox_tile);
                 
             }
             
