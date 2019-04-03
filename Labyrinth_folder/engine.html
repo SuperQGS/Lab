@@ -128,8 +128,9 @@
             function develop() {
                 //set character
                 set_character();
-                //
-                monster();
+                if (skeleton_move == true) {
+                    monster();
+                }
                 //this is the line that finally renders the tile
                 if (change_tile.spoof) {
                     ctx.drawImage(change_tile.image, change_tile.x + grid_width/2 - player1_x, (change_tile.y - 7) + grid_height/2 - player1_y);
@@ -143,6 +144,7 @@
             var coord_tick_multiplier = 0;
             var shoot_tick_multiplier = 0;
             var skel_tick_multiplier = 0;
+            var skeleton_move = false;
             function develop2() {
                 
                 //set coordinates, delayed to tick
@@ -161,8 +163,9 @@
                 
                 //shoot movement, delayed to tick
                 var skel_tick = tick - skel_tick_multiplier;
-                if (skel_tick > 10) {
-                    //monster();
+                skeleton_move = false;
+                if (skel_tick > 50) {
+                    skeleton_move = true;
                     skel_tick_multiplier = tick;
                 }
                 
@@ -179,8 +182,9 @@
                 if (change_tile.type == "entity") {
                     change_tile.spoof = true;
                 }
+                
                 if (change_tile.type == "entity" && !(change_tile.x + monster_range < player1_x || change_tile.x - monster_range > player1_x) && !(change_tile.y + monster_range < player1_y || change_tile.y - monster_range > player1_y)) {
-
+                    
                     if (change_tile.x > player1_x && monster_collision("west")) {
                         change_tile.x = change_tile.x - 1;
                     }
@@ -225,7 +229,7 @@
                             }
                             if (mchange_tile.x < change_tile.x + 7 + mcoord_spoof_x && mchange_tile.x + 7 > change_tile.x + mcoord_spoof_x && mchange_tile.y < change_tile.y + 7 + mcoord_spoof_y && mchange_tile.y + 7 > change_tile.y + mcoord_spoof_y) {
                                 
-                                if (mchange_tile.type == "player" || mchange_tile.type == "wall" || mchange_tile.type == "yellow_door" || mchange_tile.type == "red_door" || mchange_tile.type == "green_door" || mchange_tile.type == "orange_door" || mchange_tile.type == "storage") {
+                                if (mchange_tile.type == 'player' || mchange_tile.type == "wall" || mchange_tile.type == "yellow_door" || mchange_tile.type == "red_door" || mchange_tile.type == "green_door" || mchange_tile.type == "orange_door" || mchange_tile.type == "storage" || (mchange_tile != change_tile && mchange_tile.type == "entity")) {
                                     found_coll = true;
                                 } else {
                                     
@@ -292,7 +296,7 @@
                             }
                             if (change_tile.x < player1_x + 7 + coord_spoof_x && change_tile.x + 7 > player1_x + coord_spoof_x && change_tile.y < player1_y + 7 + coord_spoof_y && change_tile.y + 7 > player1_y + coord_spoof_y) {
                                 
-                                if (change_tile.type == "wall" || change_tile.type == "yellow_door" || change_tile.type == "red_door" || change_tile.type == "green_door" || change_tile.type == "orange_door" || change_tile.type == "storage") {
+                                if (change_tile.type == "entity" || change_tile.type == "wall" || change_tile.type == "yellow_door" || change_tile.type == "red_door" || change_tile.type == "green_door" || change_tile.type == "orange_door" || change_tile.type == "storage") {
                                     if (detect_key()) {
                                         return true;
                                     }
