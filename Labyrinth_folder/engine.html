@@ -130,6 +130,11 @@
             //type:
             
             function develop() {
+                //hitbox
+                if (change_tile.type == "hitbox") {
+                    change_tile.x = player1_x;
+                    change_tile.y = player1_y;
+                }
                 //set character
                 set_character();
                 if (skeleton_move == true) {
@@ -235,6 +240,12 @@
                                 mcoord_spoof_x = 1;
                             }
                             
+                            //hitbox
+                            if (mchange_tile.type == "hitbox") {
+                                mchange_tile.x = player1_x;
+                                mchange_tile.y = player1_y;
+                            }
+                            
                             if (mchange_tile.x < change_tile.x + 7 + mcoord_spoof_x && mchange_tile.x + 7 > change_tile.x + mcoord_spoof_x && mchange_tile.y < change_tile.y + 7 + mcoord_spoof_y && mchange_tile.y + 7 > change_tile.y + mcoord_spoof_y) {
                                 
                                 if (mchange_tile.type == "hitbox" || mchange_tile.type == "wall" || mchange_tile.type == "yellow_door" || mchange_tile.type == "red_door" || mchange_tile.type == "green_door" || mchange_tile.type == "orange_door" || mchange_tile.type == "storage" || (mchange_tile != change_tile && mchange_tile.type == "entity")) {
@@ -257,12 +268,6 @@
             }
             
             function set_character() {
-                //hitbox
-                if (change_tile.type == "hitbox") {
-                    change_tile.x = player1_x;
-                    change_tile.y = player1_y;
-                }
-                
                 if (change_tile.type == "player") {
                     //set player coordinates to player tile
                     change_tile.x = player1_x;
