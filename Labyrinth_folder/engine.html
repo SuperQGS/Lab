@@ -154,6 +154,7 @@
             var shoot_tick_multiplier = 0;
             var skel_tick_multiplier = 0;
             var skeleton_move = false;
+            var gameover = false;
             function develop2() {
                 //skeleton movement, delayed to tick
                 var skel_tick = tick - skel_tick_multiplier;
@@ -182,9 +183,17 @@
                 
                 
                 
-                if (hp < 1) {
+                if (hp < 1 && !gameover) {
                     hp = 0;
-                    console.log("GAME OVER FUNCTION");
+                    gameover = true;
+                    alert("GAME OVER");
+                    location.reload();
+                }
+                
+                if (player1_x >= 237 && !gameover) {
+                    gameover = true;
+                    alert("YOU WIN");
+                    location.reload();
                 }
                 
                 startstartshoot();
@@ -250,8 +259,13 @@
                                 
                                 if (mchange_tile.type == "hitbox" || mchange_tile.type == "wall" || mchange_tile.type == "yellow_door" || mchange_tile.type == "red_door" || mchange_tile.type == "green_door" || mchange_tile.type == "orange_door" || mchange_tile.type == "storage" || (mchange_tile != change_tile && mchange_tile.type == "entity")) {
                                     found_coll = true;
+                                    if (mchange_tile.type == "hitbox") {
+                                        hp = hp - 1;
+                                    }
                                 } else {
-                                    
+                                    if (mchange_tile.type == "arrow") {
+                                        change_tile.x = 9999999;
+                                    }
                                 }
                             }
                         }
