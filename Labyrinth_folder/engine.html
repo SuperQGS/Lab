@@ -62,6 +62,8 @@
             <img src="images/crossbow.png" id="imgcrossbow">
             <img src="images/cannon.png" id="imgcannon">
             <img src="images/raycaster.png" id="imgraycaster">
+            
+            <img src="images/a_bow.png" id="ibow_ammo">
         </div>
             
 
@@ -181,7 +183,7 @@
                     shoot_tick_multiplier = tick;
                 }
                 
-                
+                current_a_update();
                 
                 if (hp < 1 && !gameover) {
                     hp = 0;
@@ -361,38 +363,46 @@
                                 else if (change_tile.type == "bow") {
                                     bow = true;
                                     bow_a = bow_a + 5;
+                                    change_tile.x = 99999999;
                                 }
                                 
                                 else if (change_tile.type == "crossbow") {
                                     crossbow = true;
                                     crossbow_a = crossbow_a + 3;
+                                    change_tile.x = 99999999;
                                 }
                                 
                                 else if (change_tile.type == "cannon") {
                                     cannon = true;
                                     cannon_a = cannon_a + 2;
+                                    change_tile.x = 99999999;
                                 }
                                 
                                 else if (change_tile.type == "raycast") {
                                     raycast = true;
                                     raycast_a = raycast_a + 25;
+                                    change_tile.x = 99999999;
                                 }
                                 
                                 //ammo pickups
                                 else if (change_tile.type == "bow_ammo") {
                                     bow_a = bow_a + 10;
+                                    change_tile.x = 99999999;
                                 }
                                 
                                 else if (change_tile.type == "crossbow_ammo") {
                                     crossbow_a = crossbow_a + 4;
+                                    change_tile.x = 99999999;
                                 }
                                 
                                 else if (change_tile.type == "cannon_ammo") {
                                     cannon_a = cannon_a + 5;
+                                    change_tile.x = 99999999;
                                 }
                                 
                                 else if (change_tile.type == "raycast_ammo") {
                                     raycast_a = raycast_a + 100;
+                                    change_tile.x = 99999999;
                                 }
                             }
                         }
@@ -542,6 +552,23 @@
                 }
             }
             
+            function current_a_update() {
+                if (weapon == "hammer") {
+                    current_ammo = hammer_a;
+                }
+                if (weapon == "bow") {
+                    current_ammo = bow_a;
+                }
+                if (weapon == "crossbow") {
+                    current_ammo = crossbow_a;
+                }
+                if (weapon == "cannon") {
+                    current_ammo = cannon_a;
+                }
+                if (weapon == "raycast") {
+                    current_ammo = raycast_a;
+                }
+            }
             //test for which key is no longer pressed and disable it
             window.addEventListener("keyup", upbinds, false);
             function upbinds(u) {                
