@@ -61,6 +61,10 @@
             Type <select id="type"></select><button onclick="tile_type()">+</button>
             <br>
             Image <select id="image"></select><button onclick="upload_image()">+</button>
+            <br><br>
+            <button onclick="save_assets()">Save Types & Images</button>
+            <br>
+            <button onclick="load_assets()">Load Types & Images</button>
         </div>
             
         <div id="canvas">
@@ -90,11 +94,13 @@
         <p>Example</p>
         <canvas id="example"></canvas>
         <br>
+        <button onclick="convert_data()">CONVERT OLD SAVE</button>
+        <br>
         <button onclick="save_data()">Save</button>
         <button onclick="load_data()">Load</button>
         <br>
-        <button onclick="output()">Compile</button>
-        <button onclick="jsfile()">download .js [experimental]</button>
+        <button onclick="output()">Compile To HTML Text</button>
+        <button onclick="jsfile()">Compile To JAVASCRIPT File</button>
         <script>
             //engine by SuperQGS @ QGsoftware.github.io
             
@@ -478,17 +484,54 @@
             }
             
             function save_data() {
-                var image_html_tags = document.getElementById("images").innerHTML;
                 get_tiles();
+                var save = ["[" + get_tile_list + "]", "document.getElementById(\'canvas_name\').value = \'" + canvas_name +"\';" + "document.getElementById(\'texture_dimensions\').value = " + texture_dimensions + ";" + "document.getElementById(\'gridheight\').value = " + document.getElementById("gridheight").value + ";" + "document.getElementById(\'gridwidth\').value = " + document.getElementById("gridwidth").value + ";" + "\n"]
+                //!!!add directory for assets directory
+                
+                download(canvas_name + "_save.js","var " + canvas_name + "_save = " + "[" + save + "];");
+            }
+            
+            function save_assets() {
+                var image_html_tags = document.getElementById("images").innerHTML;
                 var temp_type_array = "['" + type_array.join("','") + "']";
                 var temp_image_array = "['" + image_array.join("','") + "']";
                 
-                var save = [temp_type_array,image_html_tags, temp_image_array, "[" + get_tile_list + "]", "document.getElementById(\'canvas_name\').value = \'" + canvas_name +"\';" + "document.getElementById(\'texture_dimensions\').value = " + texture_dimensions + ";" + "document.getElementById(\'gridheight\').value = " + document.getElementById("gridheight").value + ";" + "document.getElementById(\'gridwidth\').value = " + document.getElementById("gridwidth").value + ";" + "\n"]
-                alert(save);
-                alert("SAVED: Data printed to console, please copy to a safe place.")
+                var save = [temp_type_array, image_html_tags, temp_image_array]
+                
+                download(canvas_name + "_assets.js","var " + canvas_name + "_assets = " + "[" + save + "];");
+            }
+            
+            function load_assets(directory) {
+                ///!!!
+                //if directory is null, prompt for directory and then re run the function
+                //create tag to link to directory in the top of page
+                //take each [0][1][2] and make it the right variable
+                //probably should rework the image tags so it saves each one as an array
+                //subtracting images and types would also be useful
+                //fix image bug vinny mention. arrays would probably fix with a new system
             }
             
             function load_data() {
+                var temp_array = prompt("TYPE ARRAY:");
+                type_array = eval(temp_array);
+                document.getElementById("images").innerHTML = prompt("IMAGE TAGS:");
+                var temp_image_array = prompt("IMAGE ARRAY:");
+                image_array = eval(temp_image_array);
+                tiles = eval(prompt("TILE ARRAY:"));
+                eval(prompt("CANVAS OPTIONS"));
+                alert("LOAD SUCCESSFUL");
+                
+                existing_tiles();
+                var i;
+                var select_tile_list = "";
+                for (i = 0; i < image_array.length; i++) {
+                    
+                    select_tile_list = select_tile_list + "<option>" + image_array[i] + "</option>";
+                }
+                document.getElementById("image").innerHTML = select_tile_list;
+            }
+            
+            function convert_data() {
                 var temp_array = prompt("TYPE ARRAY:");
                 type_array = eval(temp_array);
                 document.getElementById("images").innerHTML = prompt("IMAGE TAGS:");
@@ -514,7 +557,6 @@
                 download(canvas_name + ".js","var " + canvas_name + " = " + "[" + get_tile_list + "];");
             }
             
-            //!!! this is not my function, I will understand how it works later
             function download(filename, text) {
                 var element = document.createElement('a');
                 element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
