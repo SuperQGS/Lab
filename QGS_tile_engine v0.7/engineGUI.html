@@ -217,6 +217,7 @@
                         ctx.drawImage(change_tile.image, change_tile.x, change_tile.y);
                         new_tile_num = new_tile_num + 1;
                     } else {
+                        load_assets_2();
                         tileloop = false;
                     }
                 }
@@ -495,21 +496,36 @@
             
             function save_assets() {
                 var image_html_tags = document.getElementById("images").innerHTML;
+                var fixquotes = '\\"'
+                image_html_tags = image_html_tags.split(',').join(fixquotes);
+                
                 var temp_type_array = "['" + type_array.join("','") + "']";
                 var temp_image_array = "['" + image_array.join("','") + "']";
                 
-                var save = [temp_type_array, image_html_tags, temp_image_array]
+                var save = [temp_type_array, "\'" + image_html_tags + "\'", temp_image_array]
                 
-                download(canvas_name + "_assets.js","var " + canvas_name + "_assets = " + "[" + save + "];");
+                var title = prompt("Assets Save File Title:");
+                
+                download(title + ".js","assets = " + "[" + save + "];");
             }
-            
+            var script;
+            var assets;
             function load_assets(directory) {
                 if (directory == "" || directory == null) {
-                    var temp_dir = prompt("Asset Save File Directory:")
+                    var temp_dir = prompt("Assets Save File Directory:");
                     load_assets(temp_dir);
                 } else {
                     document.getElementById("asset_dir").innerHTML = "dir: " + directory;
-                    document.getElementById("added_scripts").innerHTML = "<script src=/'" + directory + "/'></script" + ">"
+                    
+                    //load js file yes!
+                    script = document.createElement("script");
+                    script.src = directory;   
+                    alert(script);
+                    document.body.appendChild(script);
+                    
+                    
+                    
+                    
                 }
                 ///!!!
                 //if directory is null, prompt for directory and then re run the function
@@ -518,6 +534,15 @@
                 //probably should rework the image tags so it saves each one as an array
                 //subtracting images and types would also be useful
                 //fix image bug vinny mention. arrays would probably fix with a new system
+            }
+            
+            function load_assets_2() {
+                if (assets != undefined) {
+                    //set variables back
+                    type_array = assets[0];
+                    document.getElementById("images").innerHTML = assets[1];
+                    image_array = assets[2];
+                }
             }
             
             function load_data() {
