@@ -489,14 +489,14 @@
                 get_tiles();
                 var save = ["[" + get_tile_list + "]", "document.getElementById(\'canvas_name\').value = \'" + canvas_name +"\';" + "document.getElementById(\'texture_dimensions\').value = " + texture_dimensions + ";" + "document.getElementById(\'gridheight\').value = " + document.getElementById("gridheight").value + ";" + "document.getElementById(\'gridwidth\').value = " + document.getElementById("gridwidth").value + ";" + "\n"]
                 //!!!add directory for assets directory
-                var s_assets = "!!!";
-                var save = "[" + get_tile_list + "]"; //!!! make tiles = this in this quote
+                var s_assets_dir = "load_assets(\'" + assets_directory + "\'); load_rest()";
+                var save = "tiles = [" + get_tile_list + "];";
                 var s_canvas_name = "document.getElementById(\'canvas_name\').value = \'" + canvas_name +"\';";
                 var s_texture_dimensions = "document.getElementById(\'texture_dimensions\').value = " + texture_dimensions + ";";
                 var s_gridheight = "document.getElementById(\'gridheight\').value = " + document.getElementById("gridheight").value + ";";
                 var s_gridwidth = "document.getElementById(\'gridwidth\').value = " + document.getElementById("gridwidth").value + ";";
                 
-                var save_file = s_assets + save + s_canvas_name + s_texture_dimensions + s_gridheight + s_gridwidth;
+                var save_file = s_assets_dir + "function load_rest() {" + save + s_canvas_name + s_texture_dimensions + s_gridheight + s_gridwidth + "load_followup();}";
                 
                 var file_name = prompt("Save As: (.js)")
                 //!!! prompt file name
@@ -522,6 +522,7 @@
             }
             var script;
             var assets;
+            var assets_directory = null;
             function load_assets(directory) {
                 if (directory == "" || directory == null) {
                     var temp_dir = prompt("Assets Save File Directory:");
@@ -537,7 +538,7 @@
                     
                     
                     
-                    
+                    assets_directory = directory;
                 }
                 ///!!!
                 //probably should rework the image tags so it saves each one as an array
@@ -545,24 +546,32 @@
                 //fix image bug vinny mention. arrays would probably fix with a new system
             }
             
-            function load_data() {
-                var temp_array = prompt("TYPE ARRAY:");
-                type_array = eval(temp_array);
-                document.getElementById("images").innerHTML = prompt("IMAGE TAGS:");
-                var temp_image_array = prompt("IMAGE ARRAY:");
-                image_array = eval(temp_image_array);
-                tiles = eval(prompt("TILE ARRAY:"));
-                eval(prompt("CANVAS OPTIONS"));
-                alert("LOAD SUCCESSFUL");
-                
-                existing_tiles();
-                var i;
-                var select_tile_list = "";
-                for (i = 0; i < image_array.length; i++) {
+            function load_data(directory) {
+                if (directory == "" || directory == null) {
+                    var temp_dir = prompt("Save File Directory:");
+                    load_data(temp_dir);
+                } else {
+                    document.getElementById("asset_dir").innerHTML = "dir: " + directory;
                     
-                    select_tile_list = select_tile_list + "<option>" + image_array[i] + "</option>";
+                    //load js file yes!
+                    script = document.createElement("script");
+                    script.src = directory;
+                    alert(script);
+                    document.body.appendChild(script);
+                    
+                    
                 }
-                document.getElementById("image").innerHTML = select_tile_list;
+            }
+            
+            function load_followup() {
+                existing_tiles();
+                    var i;
+                    var select_tile_list = "";
+                    for (i = 0; i < image_array.length; i++) {
+                    
+                        select_tile_list = select_tile_list + "<option>" + image_array[i] + "</option>";
+                    }
+                    document.getElementById("image").innerHTML = select_tile_list;
             }
             
             function convert_data() {
