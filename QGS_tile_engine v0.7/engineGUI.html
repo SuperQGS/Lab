@@ -40,7 +40,7 @@
         </style>
     </head>
     <body>
-        <img src="test.bmp" id="testing">
+        
         <div id="images"></div>
         
         <h1>QGS Tile Engine GUI v0.7</h1>
@@ -60,7 +60,7 @@
         <br>
         <br>
         <p>Tile Select & Builder</p>
-            Type <select id="type"></select><button onclick="tile_type()">+</button>
+            Type <select id="type"></select><button onclick="tile_type()">+</button><button onclick="load_rest()">LR</button>
             <br>
             Image <select id="image"></select><button onclick="upload_image()">+</button>
             <br><br>
@@ -539,8 +539,19 @@
                     
                     assets_directory = directory;
                     
-                    load_rest();
                 }
+                //create list of images
+                var i;
+                var select_tile_list = "";
+                for (i = 0; i < image_array.length; i++) {
+                    
+                    select_tile_list = select_tile_list + "<option>" + image_array[i] + "</option>";
+                }
+                document.getElementById("image").innerHTML = select_tile_list;
+                //image_div = image_div + "<img src=" + image_dir +  " id=" + image_id + ">"
+                //document.getElementById("images").innerHTML = image_div;
+                
+                
                 ///!!!
                 //probably should rework the image tags so it saves each one as an array
                 //subtracting images and types would also be useful
