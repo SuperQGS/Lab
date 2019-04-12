@@ -40,6 +40,7 @@
         </style>
     </head>
     <body>
+        <img src="test.bmp" id="testing">
         <div id="images"></div>
         
         <h1>QGS Tile Engine GUI v0.7</h1>
@@ -489,7 +490,7 @@
                 get_tiles();
                 var save = ["[" + get_tile_list + "]", "document.getElementById(\'canvas_name\').value = \'" + canvas_name +"\';" + "document.getElementById(\'texture_dimensions\').value = " + texture_dimensions + ";" + "document.getElementById(\'gridheight\').value = " + document.getElementById("gridheight").value + ";" + "document.getElementById(\'gridwidth\').value = " + document.getElementById("gridwidth").value + ";" + "\n"]
                 //!!!add directory for assets directory
-                var s_assets_dir = "load_assets(\'" + assets_directory + "\'); load_rest()";
+                var s_assets_dir = "load_assets(\'" + assets_directory + "\');";
                 var save = "tiles = [" + get_tile_list + "];";
                 var s_canvas_name = "document.getElementById(\'canvas_name\').value = \'" + canvas_name +"\';";
                 var s_texture_dimensions = "document.getElementById(\'texture_dimensions\').value = " + texture_dimensions + ";";
@@ -536,9 +537,9 @@
                     alert(script);
                     document.body.appendChild(script);
                     
-                    
-                    
                     assets_directory = directory;
+                    
+                    load_rest();
                 }
                 ///!!!
                 //probably should rework the image tags so it saves each one as an array
