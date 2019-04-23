@@ -60,7 +60,7 @@
         <br>
         <br>
         <p>Tile Select & Builder</p>
-            Type <select id="type"></select><button onclick="tile_type()">+</button><button onclick="load_rest()">LR</button>
+            Type <select id="type"></select><button onclick="tile_type()">+</button>
             <br>
             Image <select id="image"></select><button onclick="upload_image()">+</button>
             <br><br>
@@ -128,6 +128,10 @@
             //textbox values function
             window.setInterval(function(){ textboxes(); }, 0);
             function textboxes() {
+                if (execute_save) {
+                    load_rest();
+                    execute_save = false;
+                }
                 //image box variable
                 image_div = document.getElementById("images").innerHTML
                 
@@ -534,7 +538,7 @@
                     //load js file yes!
                     script = document.createElement("script");
                     script.src = directory;
-                    alert(script);
+                    //alert(script);
                     document.body.appendChild(script);
                     
                     assets_directory = directory;
@@ -558,19 +562,23 @@
                 //fix image bug vinny mention. arrays would probably fix with a new system
             }
             
+            var execute_save = false;
             function load_data(directory) {
                 if (directory == "" || directory == null) {
                     var temp_dir = prompt("Save File Directory:");
                     load_data(temp_dir);
+                    
                 } else {
                     document.getElementById("asset_dir").innerHTML = "dir: " + directory;
                     
                     //load js file yes!
                     script = document.createElement("script");
                     script.src = directory;
-                    alert(script);
+                    //alert(script);
                     document.body.appendChild(script);
                     
+                    //continue
+                    execute_save = true;
                     
                 }
             }
