@@ -1,1 +1,0 @@
-var configtest_assets = [['tttt','hello world','howdy','stardew valley is a medical addiction'],<img src="test.bmp" id="testing">,['testing']];
