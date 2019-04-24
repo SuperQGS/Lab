@@ -595,23 +595,14 @@
             }
             
             function convert_data() {
-                var temp_array = prompt("TYPE ARRAY:");
-                type_array = eval(temp_array);
-                document.getElementById("images").innerHTML = prompt("IMAGE TAGS:");
-                var temp_image_array = prompt("IMAGE ARRAY:");
-                image_array = eval(temp_image_array);
-                tiles = eval(prompt("TILE ARRAY:"));
-                eval(prompt("CANVAS OPTIONS"));
-                alert("LOAD SUCCESSFUL");
+                var confirm_file = confirm("have you loaded an asset file?");
                 
-                existing_tiles();
-                var i;
-                var select_tile_list = "";
-                for (i = 0; i < image_array.length; i++) {
-                    
-                    select_tile_list = select_tile_list + "<option>" + image_array[i] + "</option>";
+                if (confirm_file) {
+                    tiles = eval(prompt("TILE ARRAY:"));
+                
+                    existing_tiles();
                 }
-                document.getElementById("image").innerHTML = select_tile_list;
+                
             }
             
             function jsfile() {
