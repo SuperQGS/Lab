@@ -40,8 +40,10 @@
         </style>
     </head>
     <body>
+        
         <div id="images"></div>
-        <h1>QGS Tile Engine GUI v0.5</h1>
+        
+        <h1>QGS Tile Engine GUI v0.7</h1>
         <a href="https://qgsoftware.net">qgsoftware.net</a>
         
         <div id="sidebyside">
@@ -61,6 +63,11 @@
             Type <select id="type"></select><button onclick="tile_type()">+</button>
             <br>
             Image <select id="image"></select><button onclick="upload_image()">+</button>
+            <br><br>
+            <button onclick="save_assets()">Save Types & Images</button>
+            <br>
+            <button onclick="load_assets()">Load Types & Images</button>
+            <p id = "asset_dir">dir: labyrinth_save.js</p>
         </div>
             
         <div id="canvas">
@@ -90,11 +97,13 @@
         <p>Example</p>
         <canvas id="example"></canvas>
         <br>
+        <button onclick="convert_data()">CONVERT OLD SAVE</button>
+        <br>
         <button onclick="save_data()">Save</button>
         <button onclick="load_data()">Load</button>
         <br>
-        <button onclick="output()">Compile</button>
-        <button onclick="jsfile()">download .js [experimental]</button>
+        <button onclick="output()">Compile To HTML Text</button>
+        <button onclick="jsfile()">Compile To JAVASCRIPT File</button>
         <script>
             //engine by SuperQGS @ QGsoftware.github.io
             
@@ -119,6 +128,13 @@
             //textbox values function
             window.setInterval(function(){ textboxes(); }, 0);
             function textboxes() {
+                if (execute_save) {
+                    load_rest();
+                    execute_save = false;
+                }
+                //image box variable
+                image_div = document.getElementById("images").innerHTML
+                
                 //apply game canvas variables
                 canvas_name = document.getElementById("canvas_name").value;
                 texture_dimensions = document.getElementById("texture_dimensions").value;
@@ -478,40 +494,57 @@
             }
             
             function save_data() {
-                var image_html_tags = document.getElementById("images").innerHTML;
                 get_tiles();
-                var temp_type_array = "'" + type_array.join("','") + "'";
-                var temp_image_array = "'" + image_array.join("','") + "'";
+                var save = ["[" + get_tile_list + "]", "document.getElementById(\'canvas_name\').value = \'" + canvas_name +"\';" + "document.getElementById(\'texture_dimensions\').value = " + texture_dimensions + ";" + "document.getElementById(\'gridheight\').value = " + document.getElementById("gridheight").value + ";" + "document.getElementById(\'gridwidth\').value = " + document.getElementById("gridwidth").value + ";" + "\n"]
+                var s_assets_dir = "load_assets(\'" + assets_directory + "\');";
+                var save = "tiles = [" + get_tile_list + "];";
+                var s_canvas_name = "document.getElementById(\'canvas_name\').value = \'" + canvas_name +"\';";
+                var s_texture_dimensions = "document.getElementById(\'texture_dimensions\').value = " + texture_dimensions + ";";
+                var s_gridheight = "document.getElementById(\'gridheight\').value = " + document.getElementById("gridheight").value + ";";
+                var s_gridwidth = "document.getElementById(\'gridwidth\').value = " + document.getElementById("gridwidth").value + ";";
                 
-                console.log("---SAVED DATA------------------------" + "\n"
-                + "-TYPE ARRAY:" + "\n"
-                + "[" + temp_type_array + "]" + "\n"
-                + "-IMAGE TAGS:" + "\n"
-                + image_html_tags + "\n"
-                + "-IMAGE ARRAY:" + "\n"
-                + "[" + temp_image_array + "]" + "\n"
-                + "-TILE ARRAY:" + "\n"
-                + "[" + get_tile_list + "]" + "\n"
-                + "-CANVAS OPTIONS:" + "\n"
-                            + "document.getElementById(\'canvas_name\').value = \'" + canvas_name +"\';"
-                            + "document.getElementById(\'texture_dimensions\').value = " + texture_dimensions + ";"
-                            + "document.getElementById(\'gridheight\').value = " + document.getElementById("gridheight").value + ";"
-                            + "document.getElementById(\'gridwidth\').value = " + document.getElementById("gridwidth").value + ";" + "\n"
-                + "-------------------------------------");
-                alert("SAVED: Data printed to console, please copy to a safe place.")
+                var save_file = s_assets_dir + "function load_rest() {" + save + s_canvas_name + s_texture_dimensions + s_gridheight + s_gridwidth + "load_followup();}";
+                
+                var file_name = prompt("Save As: (.js)")
+                download(file_name + ".js",save_file);
             }
             
-            function load_data() {
-                var temp_array = prompt("TYPE ARRAY:");
-                type_array = eval(temp_array);
-                document.getElementById("images").innerHTML = prompt("IMAGE TAGS:");
-                var temp_image_array = prompt("IMAGE ARRAY:");
-                image_array = eval(temp_image_array);
-                tiles = eval(prompt("TILE ARRAY:"));
-                eval(prompt("CANVAS OPTIONS"));
-                alert("LOAD SUCCESSFUL");
+            function save_assets() {
+                var image_html_tags = document.getElementById("images").innerHTML;
+                var fixquotes = '\\"'
+                image_html_tags = image_html_tags.split(',').join(fixquotes);
                 
-                existing_tiles();
+                var temp_type_array = "['" + type_array.join("','") + "']";
+                var temp_image_array = "['" + image_array.join("','") + "']";
+                
+                var save = "type_array = " + temp_type_array + ";" +
+                        "document.getElementById(\"images\").innerHTML = " + "\'" + image_html_tags + "\';" +
+                        "image_array = " + temp_image_array + ";";
+                
+                var title = prompt("Assets Save File Title:");
+                
+                download(title + ".js",save);
+            }
+            var script;
+            var assets;
+            var assets_directory = null;
+            function load_assets(directory) {
+                if (directory == "" || directory == null) {
+                    var temp_dir = prompt("Assets Save File Directory:");
+                    load_assets(temp_dir);
+                } else {
+                    document.getElementById("asset_dir").innerHTML = "dir: " + directory;
+                    
+                    //load js file yes!
+                    script = document.createElement("script");
+                    script.src = directory;
+                    //alert(script);
+                    document.body.appendChild(script);
+                    
+                    assets_directory = directory;
+                    
+                }
+                //create list of images
                 var i;
                 var select_tile_list = "";
                 for (i = 0; i < image_array.length; i++) {
@@ -519,6 +552,57 @@
                     select_tile_list = select_tile_list + "<option>" + image_array[i] + "</option>";
                 }
                 document.getElementById("image").innerHTML = select_tile_list;
+                //image_div = image_div + "<img src=" + image_dir +  " id=" + image_id + ">"
+                //document.getElementById("images").innerHTML = image_div;
+                
+                
+                ///!!!
+                //probably should rework the image tags so it saves each one as an array
+                //subtracting images and types would also be useful
+                //fix image bug vinny mention. arrays would probably fix with a new system
+            }
+            
+            var execute_save = false;
+            function load_data(directory) {
+                if (directory == "" || directory == null) {
+                    var temp_dir = prompt("Save File Directory:");
+                    load_data(temp_dir);
+                    
+                } else {
+                    document.getElementById("asset_dir").innerHTML = "dir: " + directory;
+                    
+                    //load js file yes!
+                    script = document.createElement("script");
+                    script.src = directory;
+                    //alert(script);
+                    document.body.appendChild(script);
+                    
+                    //continue
+                    execute_save = true;
+                    
+                }
+            }
+            
+            function load_followup() {
+                existing_tiles();
+                    var i;
+                    var select_tile_list = "";
+                    for (i = 0; i < image_array.length; i++) {
+                    
+                        select_tile_list = select_tile_list + "<option>" + image_array[i] + "</option>";
+                    }
+                    document.getElementById("image").innerHTML = select_tile_list;
+            }
+            
+            function convert_data() {
+                var confirm_file = confirm("have you loaded an asset file?");
+                
+                if (confirm_file) {
+                    tiles = eval(prompt("TILE ARRAY:"));
+                
+                    existing_tiles();
+                }
+                
             }
             
             function jsfile() {
@@ -527,7 +611,6 @@
                 download(canvas_name + ".js","var " + canvas_name + " = " + "[" + get_tile_list + "];");
             }
             
-            //!!! this is not my function, I will understand how it works later
             function download(filename, text) {
                 var element = document.createElement('a');
                 element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -537,5 +620,6 @@
                 document.body.removeChild(element);
             }
         </script>
+        <div id="added_scripts"></div>
     </body>
 </html>
