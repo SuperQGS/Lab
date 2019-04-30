@@ -408,6 +408,14 @@
                                     raycast_a = raycast_a + 100;
                                     change_tile.x = 99999999;
                                 }
+                                //health
+                                else if (change_tile.type == "apple" && hp < 100) {
+                                    change_tile.x = 99999999;
+                                    hp = hp + 10;
+                                    if (hp > 100) {
+                                        hp = 100;
+                                    }
+                                }
                             }
                         }
                         new_tile_num = new_tile_num + 1;
@@ -799,16 +807,16 @@
                 ctx.fillText(current_ammo + "", 38, 83);
                 
                 if (red == true) {
-                    ctx.drawImage(red_key,59,76);
+                    ctx.drawImage(redkey,59,76);
                 }
                 if (yellow == true) {
-                    ctx.drawImage(yellow_key,69,76);
+                    ctx.drawImage(yellowkey,69,76);
                 }
                 if (orange == true) {
-                    ctx.drawImage(orange_key,79,76);
+                    ctx.drawImage(orangekey,79,76);
                 }
                 if (green == true) {
-                    ctx.drawImage(green_key,89,76);
+                    ctx.drawImage(greenkey,89,76);//changed _ to no underscore
                 }
                 
             }
