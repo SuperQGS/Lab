@@ -196,17 +196,10 @@
                 
                 current_a_update();
                 
-                if (hp < 1 && !gameover) {
-                    hp = 0;
-                    gameover = true;
-                    alert("GAME OVER");
-                    location.reload();
-                }
-                
-                if (player1_x >= 237 && !gameover) {
-                    gameover = true;
-                    alert("YOU WIN");
-                    location.reload();
+                if (hp < 1) {
+                    hp = 100;
+                    select_level(level)
+                    
                 }
                 
                 startstartshoot();
@@ -415,6 +408,11 @@
                                     raycast_a = raycast_a + 100;
                                     change_tile.x = 99999999;
                                 }
+                                //exit
+                                else if (change_tile.type == "exit_stairs") {
+                                    level = level + 1;
+                                    select_level(level);
+                                }
                                 //health
                                 else if (change_tile.type == "apple" && hp < 100) {
                                     change_tile.x = 99999999;
@@ -458,6 +456,7 @@
             //INDEPENDENTS\/
             
             //player 1 information
+            var level = 1;
             //coordinates
             var player1_x = 0;
             var player1_y = -7;
@@ -806,6 +805,7 @@
                 ctx.font = "9px Verdana";
                 ctx.fillStyle = "white";
                 ctx.fillText(hp + "", 9, 83)
+                ctx.fillText("Level: " + level, 1, 10)
                 
                 //draw ammo
                 ctx.drawImage(imgweapon,30,76);
@@ -869,6 +869,7 @@
             }
             
             function select_level(num) {
+                
                 if (num == 0) {
                     load_level(lab_lvl_00, "lab_lvl_00");
                 }
