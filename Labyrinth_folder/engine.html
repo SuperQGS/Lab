@@ -196,9 +196,12 @@
                 
                 current_a_update();
                 
-                if (hp < 1) {
-                    hp = 100;
-                    select_level(level)
+                if (hp < 1 && hp != -137) {
+                    var level_died = level;
+                    localStorage.setItem("level_died", level_died);
+                    window.location = "index.html";
+                    hp = -137
+                    //var level_died = localStorage.getItem("level_died");
                     
                 }
                 
@@ -804,7 +807,11 @@
                 ctx.drawImage(health,1,76);
                 ctx.font = "9px Verdana";
                 ctx.fillStyle = "white";
-                ctx.fillText(hp + "", 9, 83)
+                if (hp < 0) {
+                    ctx.fillText("0", 9, 83);
+                } else {
+                    ctx.fillText(hp + "", 9, 83);
+                }
                 ctx.fillText("Level: " + level, 1, 10)
                 
                 //draw ammo
@@ -896,7 +903,11 @@
                 }
             }
              //demo code
-            load_level(lab_lvl_01, "lab_lvl_01");
+            //var level_died = level;
+            //localStorage.setItem("level_died", level_died);
+            level = Number(localStorage.getItem("level_select_screen"));
+            
+            select_level(level)
             //player1_x = -203;
             //player1_y = -133;
         </script>
