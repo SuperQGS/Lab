@@ -174,6 +174,9 @@
             var skel_tick_multiplier = 0;
             var skeleton_move = false;
             var gameover = false;
+            
+            var playerspeed = 25;
+            
             function develop2() {
                 //skeleton movement, delayed to tick
                 var skel_tick = tick - skel_tick_multiplier;
@@ -186,8 +189,8 @@
                 
                 //set coordinates, delayed to tick
                 var coord_tick = tick - coord_tick_multiplier;
-                while (coord_tick > 25) {
-                    coord_tick = coord_tick - 25;
+                while (coord_tick > playerspeed) {
+                    coord_tick = coord_tick - playerspeed;
                     set_coordinates()
                     coord_tick_multiplier = tick;
                 }
@@ -274,7 +277,7 @@
                                 
                                 if (mchange_tile.type == "hitbox" || mchange_tile.type == "wall" || mchange_tile.type == "yellow_door" || mchange_tile.type == "red_door" || mchange_tile.type == "green_door" || mchange_tile.type == "orange_door" || mchange_tile.type == "storage" || (mchange_tile != change_tile && mchange_tile.type == "entity")) {
                                     found_coll = true;
-                                    if (mchange_tile.type == "hitbox") {
+                                    if (mchange_tile.type == "hitbox" && !god) {
                                         hp = hp - 1;
                                     }
                                 } else {
@@ -577,6 +580,11 @@
                     imgweapon = imgraycaster;
                     current_ammo = raycast_a;
                 }
+                
+                //console
+                if (e.keyCode == "192" || e.keyCode == "191") {
+                    cheats();
+                }
             }
             
             function current_a_update() {
@@ -626,19 +634,19 @@
             //add coordinate by 1, depending on if the direction is true and if it doesn't collide
             function set_coordinates() {
                 //north
-                if (north == true && !collision("north")) {
+                if (north == true && (!collision("north") || noclip)) {
                     player1_y = player1_y - 1;
                 }
                 //south
-                if (south == true && !collision("south")) {
+                if (south == true && (!collision("south") || noclip)) {
                     player1_y = player1_y + 1;
                 }
                 //east
-                if (east == true && !collision("east")) {
+                if (east == true && (!collision("east") || noclip)) {
                     player1_x = player1_x + 1;
                 }
                 //west
-                if (west == true && !collision("west")) {
+                if (west == true && (!collision("west") || noclip)) {
                     player1_x = player1_x - 1;
                 }
                 
@@ -678,7 +686,7 @@
                     if (weapon == "crossbow") {
                         crossbow_a = crossbow_a - 1;
                         current_ammo = crossbow_a
-                        velocity = 6;
+                        velocity = 5;
                         cooldown = 1500;
                         weapon_damage = 30;
                     }
@@ -911,6 +919,46 @@
                     load_level(lab_lvl_07, "lab_lvl_07");
                 }
             }
+            
+            
+            var god = false;
+            var noclip = false;
+            function cheats() {
+                var code = prompt("Console:")
+                if (code == "qgskfa") {
+                    console.log("hey");
+                    hammer = true;
+                    bow = true;
+                    crossbow = true;
+                    cannon = true;
+                    raycast = true;
+                    
+                    red = true;
+                    green = true;
+                    yellow = true;
+                    orange = true;
+                    
+                    bow_a = 9999;
+                    crossbow_a = 9999;
+                    cannon_a = 9999;
+                    raycast_a = 9999;
+                }
+                
+                if (code == "qgsdqd") {
+                    god = true;
+                }
+                
+                if (code == "phoon") {
+                    playerspeed = 5;
+                }
+                
+                if (code == "emmalyn") {
+                    noclip = true;
+                }
+            }
+            
+            
+            
              //demo code
             //var level_died = level;
             //localStorage.setItem("level_died", level_died);
